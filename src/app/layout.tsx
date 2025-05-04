@@ -29,17 +29,23 @@ export default function RootLayout({
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
         <nav>
-          <ul className="flex gap-4">
-            <li>
-              <Link href="/lists">Lists</Link>
-            </li>
-            <li>
-              <Link href="/notes">Notes</Link>
-            </li>
+          <ul className="flex text-lg border-b">
+            <NavLink name="Lists" href="/lists" />
+            <NavLink name="Notes" href="/notes" />
           </ul>
         </nav>
         {children}
       </body>
     </html>
+  );
+}
+
+function NavLink({ name, href }: { name: string; href: string }) {
+  return (
+    <li>
+      <Link href={href} className="py-4 px-6 block">
+        {name}
+      </Link>
+    </li>
   );
 }
