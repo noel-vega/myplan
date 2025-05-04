@@ -1,3 +1,3 @@
 export default function Home() {
-  return <div>Grecia's planner</div>;
+  return <div>Grecias planner</div>;
 }
