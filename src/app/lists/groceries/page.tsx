@@ -3,13 +3,13 @@ import { ArrowLeftIcon, PlusIcon } from "lucide-react";
 import Link from "next/link";
 import { useState } from "react";
 
-type GroceryList = {
+export type GroceryList = {
   id: string;
   name: string;
   items: GroceryListItem[];
 };
 
-type GroceryListItem = {
+export type GroceryListItem = {
   id: string;
   name: string;
   quantity: number;
@@ -17,17 +17,7 @@ type GroceryListItem = {
 
 export default function FoodShoppingLists() {
   const [lists, setLists] = useState<GroceryList[]>([]);
-  const [listName, setListName] = useState("");
-  const handleCreateShoppingList = (e: React.FormEvent) => {
-    e.preventDefault();
-    const name = listName.trim();
-    if (!name) return;
-    const newList: GroceryList = {
-      id: crypto.randomUUID(),
-      name,
-      items: [],
-    };
-  };
+
   return (
     <div className="px-4">
       <div className="">
