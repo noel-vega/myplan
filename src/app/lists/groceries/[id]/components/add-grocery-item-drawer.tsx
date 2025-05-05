@@ -1,15 +1,18 @@
 import { PlusIcon } from "lucide-react";
 import { PropsWithChildren, useState } from "react";
 import { Drawer } from "vaul";
-import { useGroceryList } from "../../../providers/grocery-list";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Controller, useForm } from "react-hook-form";
 import {
   AddGroceryListItemFormValues,
   AddGroceryListItemSchema,
-} from "../types";
+} from "../../types";
+import { useAddGroceryListItem } from "../../hooks/useAddGroceryListItem";
 
-export function AddGroceryListItemDrawer({ children }: PropsWithChildren) {
+export function AddGroceryListItemDrawer({
+  groceryListId,
+  children,
+}: { groceryListId: number } & PropsWithChildren) {
   const [open, setOpen] = useState(false);
   return (
     <Drawer.Root open={open} onOpenChange={setOpen}>
@@ -26,7 +29,10 @@ export function AddGroceryListItemDrawer({ children }: PropsWithChildren) {
             <Drawer.Title className="mb-4 font-semibold text-xl">
               Add item to grocery list
             </Drawer.Title>
-            <AddGroceryListItemForm onSuccess={() => setOpen(false)} />
+            <AddGroceryListItemForm
+              groceryListId={groceryListId}
+              onSuccess={() => setOpen(false)}
+            />
           </div>
         </Drawer.Content>
       </Drawer.Portal>
@@ -34,8 +40,14 @@ export function AddGroceryListItemDrawer({ children }: PropsWithChildren) {
   );
 }
 
-function AddGroceryListItemForm({ onSuccess }: { onSuccess?: () => void }) {
-  const groceryList = useGroceryList();
+function AddGroceryListItemForm({
+  groceryListId,
+  onSuccess,
+}: {
+  groceryListId: number;
+  onSuccess?: () => void;
+}) {
+  const addItem = useAddGroceryListItem();
   const form = useForm<AddGroceryListItemFormValues>({
     resolver: zodResolver(AddGroceryListItemSchema),
   });
@@ -43,11 +55,11 @@ function AddGroceryListItemForm({ onSuccess }: { onSuccess?: () => void }) {
     <form
       onSubmit={form.handleSubmit((data) => {
         console.log(data, "data");
-        groceryList.addItem({
-          name: data.name,
-          quantity: data.quantity,
-          unitPrice: data.unitPrice,
+        addItem.mutate({
+          groceryListId: groceryListId,
+          item: data,
         });
+
         onSuccess?.();
         form.reset();
       })}

@@ -1,10 +1,11 @@
 "use client";
 import { useRoutineList } from "@/app/providers/routine-list";
-import { ArrowLeftIcon, PlusIcon } from "lucide-react";
+import { ArrowLeftIcon, PlusIcon, SettingsIcon } from "lucide-react";
 import Link from "next/link";
 import { useParams } from "next/navigation";
 import { AddRoutineTaskDrawer } from "./components/add-task-drawer";
 import { RoutineTaskTable } from "./components/task-table";
+import { RoutineSettingsDrawer } from "./routine-settings-drawer";
 
 export default function RoutinePage() {
   const params = useParams();
@@ -16,7 +17,7 @@ export default function RoutinePage() {
   }
 
   return (
-    <div className="px-4 h-full flex flex-col">
+    <div className="h-full flex flex-col">
       <header className="mb-4">
         <Link
           href="/lists/routines"
@@ -24,8 +25,17 @@ export default function RoutinePage() {
         >
           <ArrowLeftIcon size={16} /> Back
         </Link>
-        <h1 className="text-sm">Routine</h1>
-        <h2 className="text-xl font-semibold">{routine.name}</h2>
+        <div className="flex justify-between items-center w-full">
+          <div>
+            <h1 className="text-sm">Routine</h1>
+            <h2 className="text-xl font-semibold">{routine.name}</h2>
+          </div>
+          <RoutineSettingsDrawer routine={routine}>
+            <button>
+              <SettingsIcon className="text-gray-500" />
+            </button>
+          </RoutineSettingsDrawer>
+        </div>
       </header>
       <section className="flex-1">
         <RoutineTaskTable items={routine.tasks} />

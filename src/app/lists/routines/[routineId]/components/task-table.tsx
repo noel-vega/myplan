@@ -8,6 +8,7 @@ import {
 import { Drawer } from "vaul";
 import { PropsWithChildren, useState } from "react";
 import { RoutineTask } from "../../types";
+import Switch from "@/components/switch";
 
 // type GroceryListTableProps = {
 //   groceryList: GroceryList;
@@ -21,8 +22,9 @@ const columns: ColumnDef<RoutineTask>[] = [
   {
     header: "Completed",
     accessorKey: "competed",
-    cell: ({ row }) => {
-      return <p>{row.original.competed ? "true" : "false"}</p>;
+    cell: () => {
+      return <Switch />;
+      // return <p>{row.original.competed ? "true" : "false"}</p>;
     },
   },
 ];

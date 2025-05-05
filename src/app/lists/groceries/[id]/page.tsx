@@ -1,52 +1,46 @@
 "use client";
-import { ArrowLeftIcon, ListCheckIcon, PlusIcon } from "lucide-react";
-import Link from "next/link";
+import { FileClockIcon, ListCheckIcon, PlusIcon } from "lucide-react";
 import { GroceryListTable } from "./components/grocery-list-table";
-import { useGroceryList } from "../../providers/grocery-list";
 import { AddGroceryListItemDrawer } from "./components/add-grocery-item-drawer";
-import { useState } from "react";
+import { BackButton } from "@/components/back-button";
+import { useGroceryList } from "../hooks/useGroceryList";
+import { useParams } from "next/navigation";
 
 export default function GroceryListPage() {
-  return <GroceryList />;
-}
-
-function GroceryList() {
-  const groceryList = useGroceryList();
-  const [searchName, setSearchName] = useState("");
   return (
-    <div className="h-full flex flex-col py-2 max-w-3xl mx-auto px-4">
+    <div className="h-full flex flex-col">
       <header className="mb-4">
-        <Link href="/lists" className="flex items-center gap-1 py-2 mb-4">
-          <ArrowLeftIcon size={16} /> Back
-        </Link>
+        <BackButton href="/lists" />
         <div className="flex justify-between items-baseline">
           <p className="text-2xl font-semibold">Grocery list</p>
+          <FileClockIcon className="text-gray-400" size={20} />
         </div>
       </header>
 
-      <section>
-        <input
-          type="text"
-          value={searchName}
-          onInput={(e) => {
-            setSearchName(e.currentTarget.value);
-          }}
-          placeholder="Search item"
-          className="border rounded-lg p-2 w-full mb-5"
-        />
-      </section>
+      <GroceryList />
+    </div>
+  );
+}
 
+function GroceryList() {
+  const params = useParams();
+  const groceryList = useGroceryList({ id: 1 });
+
+  // const groceryList = useGroceryList();
+
+  if (groceryList.isError) {
+    return <p className="text-red-500">Error loading grocery list</p>;
+  }
+
+  return (
+    <>
       <section className="mb-4 flex-1">
-        <GroceryListTable
-          items={groceryList.items.filter((x) =>
-            x.name.toLowerCase().includes(searchName.toLowerCase())
-          )}
-        />
+        <GroceryListTable />
       </section>
 
       <GroceryListTotal />
       <div className="flex flex-col gap-4">
-        <AddGroceryListItemDrawer>
+        <AddGroceryListItemDrawer groceryListId={Number(params.id)}>
           <button className="border rounded-lg p-2 w-full flex justify-center items-center gap-4 text-lg cursor-pointer flex-1">
             <PlusIcon size={16} /> Add Item
           </button>
@@ -57,16 +51,22 @@ function GroceryList() {
           Done
         </button>
       </div>
-    </div>
+    </>
   );
 }
 
 function GroceryListTotal() {
-  const groceryList = useGroceryList();
-  const total = groceryList.items.reduce((acc, item) => {
+  const groceryList = useGroceryList({ id: 1 });
+  const total = groceryList.data?.items.reduce((acc, item) => {
     return acc + (item.unitPrice || 0) * item.quantity;
   }, 0);
   console.log("total", total);
+
+  if (groceryList.isLoading) {
+    <p className="text-2xl text-right font-semibold py-4">
+      Total: <span className="h-10 w-20 bg-gray-400"></span>
+    </p>;
+  }
   return (
     <p className="text-2xl text-right font-semibold py-4">Total: ${total}</p>
   );

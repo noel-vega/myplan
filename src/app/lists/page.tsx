@@ -1,6 +1,5 @@
 "use client";
 import Link from "next/link";
-import { useGroceryList } from "../providers/grocery-list";
 import { PropsWithChildren } from "react";
 import {
   BrushCleaningIcon,
@@ -8,10 +7,12 @@ import {
   SproutIcon,
   TicketIcon,
 } from "lucide-react";
+import { useGroceryList } from "./groceries/hooks/useGroceryList";
 
 export default function CategoryListPage() {
+  useGroceryList({ id: 1 });
   return (
-    <section className="p-4 max-w-3xl mx-auto w-full">
+    <section>
       <h1 className="font-semibold text-2xl mb-4">Lists</h1>
       <CategoryList />
     </section>
@@ -19,14 +20,13 @@ export default function CategoryListPage() {
 }
 
 function CategoryList() {
-  const groceryList = useGroceryList();
   return (
     <ul className="space-y-4">
-      <CategoryListItem href="/lists/groceries">
+      <CategoryListItem href="/lists/groceries/1">
         <div className="flex items-center gap-2 text-lg">
           <ShoppingBasketIcon />
           Grocery List
-          <div>{groceryList.items.length > 0 && groceryList.items.length}</div>
+          {/* <div>{groceryList.data.items.length > 0 && groceryList.items.length}</div> */}
         </div>
       </CategoryListItem>
       <CategoryListItem href="/lists/routines">

@@ -1,13 +1,25 @@
-import { PlusIcon } from "lucide-react";
+import { PlusIcon, Trash2Icon } from "lucide-react";
 import { PropsWithChildren, useState } from "react";
 import { Drawer } from "vaul";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
-import { AddRoutineSchema } from "../types";
+import { Routine, RoutineSchema } from "../types";
 import { useRoutineList } from "@/app/providers/routine-list";
+import { useRouter } from "next/navigation";
 
-export function AddRoutineDrawer({ children }: PropsWithChildren) {
+export function RoutineSettingsDrawer({
+  children,
+  routine,
+}: { routine: Routine } & PropsWithChildren) {
+  const navigate = useRouter();
   const [open, setOpen] = useState(false);
+  const routineList = useRoutineList();
+
+  const handleTrashClick = () => {
+    routineList.removeRoutine(routine.id);
+    navigate.push("/lists/routines");
+    setOpen(false);
+  };
   return (
     <Drawer.Root open={open} onOpenChange={setOpen}>
       {!open ? <Drawer.Trigger asChild>{children}</Drawer.Trigger> : null}
@@ -20,10 +32,16 @@ export function AddRoutineDrawer({ children }: PropsWithChildren) {
           }
         >
           <div className="max-w-lg mx-auto w-full">
-            <Drawer.Title className="mb-4 font-semibold text-xl">
-              Add new routine
+            <Drawer.Title className="mb-4 font-semibold text-xl flex justify-between">
+              Routine settings
+              <button onClick={handleTrashClick}>
+                <Trash2Icon className="text-red-400" />
+              </button>
             </Drawer.Title>
-            <AddRoutineForm onSuccess={() => setOpen(false)} />
+            <RoutineSettings
+              routine={routine}
+              onSuccess={() => setOpen(false)}
+            />
           </div>
         </Drawer.Content>
       </Drawer.Portal>
@@ -31,14 +49,17 @@ export function AddRoutineDrawer({ children }: PropsWithChildren) {
   );
 }
 
-function AddRoutineForm({ onSuccess }: { onSuccess?: () => void }) {
+function RoutineSettings({
+  onSuccess,
+  routine,
+}: {
+  onSuccess?: () => void;
+  routine: Routine;
+}) {
   const routineList = useRoutineList();
   const form = useForm({
-    resolver: zodResolver(AddRoutineSchema),
-    defaultValues: {
-      name: "",
-      tasks: [],
-    },
+    resolver: zodResolver(RoutineSchema),
+    defaultValues: routine,
   });
   return (
     <form
@@ -67,7 +88,7 @@ function AddRoutineForm({ onSuccess }: { onSuccess?: () => void }) {
         className="border rounded-lg p-2 w-full flex justify-center items-center gap-4 text-lg cursor-pointer"
       >
         <PlusIcon size={16} />
-        Add Routine
+        Update Routine
       </button>
     </form>
   );

@@ -3,8 +3,9 @@ import { PropsWithChildren } from "react";
 import { EditIcon, Trash2Icon } from "lucide-react";
 import { Controller, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { GroceryListItem, GroceryListItemSchema } from "../types";
-import { useGroceryList } from "../../../providers/grocery-list";
+import { GroceryListItem, GroceryListItemSchema } from "../../types";
+import { useUpdateGroceryListItem } from "../../hooks/useUpdateGroceryListItem";
+import { useDeleteGroceryListItem } from "../../hooks/useDeleteGroceryListItem";
 
 type Props = {
   item: GroceryListItem;
@@ -12,15 +13,21 @@ type Props = {
 } & PropsWithChildren;
 
 export function EditGroceryItemForm(props: Props) {
-  const groceryList = useGroceryList();
+  const deleteGroceryListItem = useDeleteGroceryListItem();
+  const updateGroceryListItem = useUpdateGroceryListItem();
+
   const form = useForm<GroceryListItem>({
     resolver: zodResolver(GroceryListItemSchema),
     defaultValues: props.item,
   });
+
   return (
     <div className="max-w-3xl mx-auto relative px-4 py-8 ">
       <button
-        onClick={() => groceryList.removeItem(props.item.id)}
+        onClick={() => {
+          deleteGroceryListItem.mutate({ id: props.item.id });
+          props.onSuccess?.();
+        }}
         className="absolute top-4 right-4 text-red-500 p-2"
       >
         <Trash2Icon />
@@ -30,12 +37,12 @@ export function EditGroceryItemForm(props: Props) {
       </Drawer.Title>
       <form
         onSubmit={form.handleSubmit((data) => {
-          groceryList.editItem({
-            itemId: data.id,
-            item: {
-              ...data,
-            },
+          const { id, ...rest } = data;
+          updateGroceryListItem.mutate({
+            itemId: id,
+            item: rest,
           });
+
           props.onSuccess?.();
           form.reset();
         })}

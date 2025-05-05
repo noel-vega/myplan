@@ -3,8 +3,9 @@
 // import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import Link from "next/link";
-import { GroceryListProvider } from "./providers/grocery-list";
 import { RoutineListProvider } from "./providers/routine-list";
+import { QueryClientProvider } from "@tanstack/react-query";
+import { queryClient } from "@/lib/react-query";
 
 // const geistSans = Geist({
 //   variable: "--font-geist-sans",
@@ -36,11 +37,11 @@ export default function RootLayout({
           </ul>
         </nav>
 
-        <GroceryListProvider>
+        <QueryClientProvider client={queryClient}>
           <RoutineListProvider>
             <div className="flex-1">{children}</div>
           </RoutineListProvider>
-        </GroceryListProvider>
+        </QueryClientProvider>
       </body>
     </html>
   );

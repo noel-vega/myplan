@@ -1,7 +1,7 @@
 import { z } from "zod";
 
 export const GroceryListItemSchema = z.object({
-  id: z.string(),
+  id: z.number(),
   name: z.string().min(1, "Name is required"),
   quantity: z.number().min(1, "Quantity is required"),
   unitPrice: z.number().min(0, "Unit price is required"),

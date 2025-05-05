@@ -3,16 +3,15 @@
 import Link from "next/link";
 import { Routine } from "./types";
 import { useRoutineList } from "@/app/providers/routine-list";
-import { ArrowLeftIcon, PlusIcon } from "lucide-react";
+import { PlusIcon } from "lucide-react";
 import { AddRoutineDrawer } from "./components/add-routine-drawer";
+import { BackButton } from "@/components/back-button";
 
 export default function RoutinesPage() {
   const routineList = useRoutineList();
   return (
-    <div className="px-4 h-full flex flex-col pb-4 max-w-3xl mx-auto w-full">
-      <Link href="/lists" className="flex items-center gap-1 py-2 mb-4">
-        <ArrowLeftIcon size={16} /> Back
-      </Link>
+    <div className="h-full flex flex-col">
+      <BackButton href="/lists" />
       <h1 className="text-2xl font-semibold mb-4">Routines</h1>
       <div className="flex-1">
         <RoutineList routines={routineList.routines} />
