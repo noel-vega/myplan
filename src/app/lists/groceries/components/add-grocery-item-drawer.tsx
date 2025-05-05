@@ -1,7 +1,7 @@
 import { PlusIcon } from "lucide-react";
 import { PropsWithChildren, useState } from "react";
 import { Drawer } from "vaul";
-import { useGroceryList } from "../providers/grocery-list";
+import { useGroceryList } from "../../../providers/grocery-list";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Controller, useForm } from "react-hook-form";
 import {

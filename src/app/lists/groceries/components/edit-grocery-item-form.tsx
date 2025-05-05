@@ -4,7 +4,7 @@ import { EditIcon, Trash2Icon } from "lucide-react";
 import { Controller, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { GroceryListItem, GroceryListItemSchema } from "../types";
-import { useGroceryList } from "../providers/grocery-list";
+import { useGroceryList } from "../../../providers/grocery-list";
 
 type Props = {
   item: GroceryListItem;

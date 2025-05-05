@@ -2,23 +2,19 @@
 import { ArrowLeftIcon, ListCheckIcon, PlusIcon } from "lucide-react";
 import Link from "next/link";
 import { GroceryListTable } from "./components/grocery-list-table";
-import { GroceryListProvider, useGroceryList } from "./providers/grocery-list";
+import { useGroceryList } from "../../providers/grocery-list";
 import { AddGroceryListItemDrawer } from "./components/add-grocery-item-drawer";
 import { useState } from "react";
 
 export default function GroceryListPage() {
-  return (
-    <GroceryListProvider>
-      <GroceryList />
-    </GroceryListProvider>
-  );
+  return <GroceryList />;
 }
 
 function GroceryList() {
   const groceryList = useGroceryList();
   const [searchName, setSearchName] = useState("");
   return (
-    <div className="h-full flex flex-col py-2 max-w-2xl mx-auto px-2">
+    <div className="h-full flex flex-col py-2 max-w-3xl mx-auto px-4">
       <header className="mb-4">
         <Link href="/lists" className="flex items-center gap-1 py-2 mb-4">
           <ArrowLeftIcon size={16} /> Back
@@ -49,7 +45,7 @@ function GroceryList() {
       </section>
 
       <GroceryListTotal />
-      <div className="flex gap-4">
+      <div className="flex flex-col gap-4">
         <AddGroceryListItemDrawer>
           <button className="border rounded-lg p-2 w-full flex justify-center items-center gap-4 text-lg cursor-pointer flex-1">
             <PlusIcon size={16} /> Add Item

@@ -1,5 +1,6 @@
+"use client";
 import { createContext, PropsWithChildren, useContext, useState } from "react";
-import { GroceryList, GroceryListItem } from "../types";
+import { GroceryList, GroceryListItem } from "../lists/groceries/types";
 
 export type GroceryListContextType = {
   items: GroceryListItem[];
@@ -22,21 +23,21 @@ export function useGroceryList() {
 }
 
 const initGroceryList: GroceryList = {
-  id: crypto.randomUUID(),
+  id: "1",
   name: "my first list",
   items: [
-    {
-      id: crypto.randomUUID(),
-      name: "Milk",
-      quantity: 2,
-      unitPrice: 4,
-    },
-    {
-      id: crypto.randomUUID(),
-      name: "12 Eggs",
-      quantity: 1,
-      unitPrice: 9,
-    },
+    // {
+    //   id: crypto.randomUUID(),
+    //   name: "Milk",
+    //   quantity: 2,
+    //   unitPrice: 4,
+    // },
+    // {
+    //   id: crypto.randomUUID(),
+    //   name: "12 Eggs",
+    //   quantity: 1,
+    //   unitPrice: 9,
+    // },
   ],
 };
 
