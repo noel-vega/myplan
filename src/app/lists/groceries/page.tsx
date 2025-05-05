@@ -8,6 +8,7 @@ import {
   PropsWithChildren,
   useContext,
   useEffect,
+  useRef,
   useState,
 } from "react";
 import { Controller, useForm } from "react-hook-form";
@@ -161,6 +162,7 @@ function AddGroceryListItemDrawer() {
               <div>
                 <label htmlFor="item-name">Name</label>
                 <input
+                  autoFocus
                   {...form.register("name")}
                   type="text"
                   id="item-name"
