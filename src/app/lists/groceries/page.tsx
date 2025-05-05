@@ -75,9 +75,14 @@ function AddGroceryListItemDrawer() {
         </Drawer.Trigger>
       ) : null}
 
+      {/* {open && ( */}
       <Drawer.Portal>
         <Drawer.Overlay className="fixed inset-0 bg-black/40" />
-        <Drawer.Content className="fixed bottom-0 left-0 right-0 h-fit bg-white px-4 py-8 rounded-t-lg">
+        <Drawer.Content
+          className={
+            "fixed bottom-0 left-0 right-0 bg-white px-4 py-8 rounded-t-lg outline-none"
+          }
+        >
           <div className="max-w-lg mx-auto w-full">
             <Drawer.Title className="mb-4 font-semibold text-xl">
               Add item to grocery list
@@ -132,6 +137,7 @@ function AddGroceryListItemDrawer() {
           </div>
         </Drawer.Content>
       </Drawer.Portal>
+      {/* )} */}
     </Drawer.Root>
   );
 }
