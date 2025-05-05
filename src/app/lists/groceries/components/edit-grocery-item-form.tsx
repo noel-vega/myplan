@@ -22,7 +22,7 @@ export function EditGroceryItemForm(props: Props) {
       <button className="absolute top-4 right-4 text-red-500 p-2">
         <Trash2Icon />
       </button>
-      <Drawer.Title className="font-semibold text-3xl mb-8 text-center">
+      <Drawer.Title className="font-semibold text-xl mb-4">
         {props.item.name}
       </Drawer.Title>
       <form
