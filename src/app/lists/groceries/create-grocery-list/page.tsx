@@ -1,6 +1,6 @@
+"use client";
 import { ArrowLeftIcon } from "lucide-react";
 import Link from "next/link";
-import { GroceryList } from "../page";
 import { useState } from "react";
 
 export default function CreateGroceryList() {
@@ -9,11 +9,11 @@ export default function CreateGroceryList() {
     e.preventDefault();
     const name = listName.trim();
     if (!name) return;
-    const newList: GroceryList = {
-      id: crypto.randomUUID(),
-      name,
-      items: [],
-    };
+    // const newList: GroceryList = {
+    //   id: crypto.randomUUID(),
+    //   name,
+    //   items: [],
+    // };
   };
   return (
     <div className="px-4">

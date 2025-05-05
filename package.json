@@ -9,10 +9,16 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@hookform/resolvers": "^5.0.1",
+    "@radix-ui/react-dialog": "^1.1.11",
+    "@tanstack/react-table": "^8.21.3",
     "lucide-react": "^0.507.0",
     "next": "15.3.1",
     "react": "^19.0.0",
-    "react-dom": "^19.0.0"
+    "react-dom": "^19.0.0",
+    "react-hook-form": "^7.56.2",
+    "vaul": "^1.1.2",
+    "zod": "^3.24.4"
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3",
