@@ -5,7 +5,6 @@ import {
   getCoreRowModel,
   useReactTable,
 } from "@tanstack/react-table";
-import { useGroceryList } from "../providers/grocery-list";
 import { Drawer } from "vaul";
 import { EditGroceryItemForm } from "./edit-grocery-item-form";
 import { GroceryListItem } from "../types";
@@ -27,7 +26,7 @@ const columns: ColumnDef<GroceryListItem>[] = [
     cell: ({ row }) => <p>${row.original.unitPrice}</p>,
   },
   {
-    header: "Total Price",
+    header: "Total",
     cell: ({ row }) => {
       const totalPrice =
         Number(row.original.unitPrice) * Number(row.original.quantity);
@@ -39,11 +38,10 @@ const columns: ColumnDef<GroceryListItem>[] = [
   },
 ];
 
-export function GroceryListTable() {
-  const groceryList = useGroceryList();
+export function GroceryListTable({ items }: { items: GroceryListItem[] }) {
   const table = useReactTable({
     columns,
-    data: groceryList.items,
+    data: items,
     getCoreRowModel: getCoreRowModel(),
   });
   // const handleMinusClick = ({ itemId }: { itemId: string }) => {
@@ -71,14 +69,17 @@ export function GroceryListTable() {
   // };
 
   return (
-    <div className="w-full rounded-lg overflow-clip">
+    <div className="w-full rounded border overflow-clip border-gray-200">
       <table className="w-full">
         <thead>
           {table.getHeaderGroups().map((headerGroup) => {
             return (
               <tr key={headerGroup.id}>
                 {headerGroup.headers.map((header) => (
-                  <th key={header.id} className="text-left">
+                  <th
+                    key={header.id}
+                    className="text-left pl-2 py-3 bg-gray-50"
+                  >
                     {flexRender(
                       header.column.columnDef.header,
                       header.getContext()
@@ -92,9 +93,12 @@ export function GroceryListTable() {
         <tbody>
           {table.getRowModel().rows.map((row) => (
             <EditGroceryItemDrawer item={row.original} key={row.id}>
-              <tr key={row.id}>
+              <tr
+                key={row.id}
+                className="border-b border-gray-200 even:bg-gray-50 hover:bg-indigo-200/20 hover:cursor-pointer"
+              >
                 {row.getVisibleCells().map((cell) => (
-                  <td key={cell.id} className="py-2">
+                  <td key={cell.id} className="py-3 pl-2">
                     {flexRender(cell.column.columnDef.cell, cell.getContext())}
                   </td>
                 ))}

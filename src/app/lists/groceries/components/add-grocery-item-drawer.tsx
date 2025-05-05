@@ -1,5 +1,5 @@
 import { PlusIcon } from "lucide-react";
-import { useState } from "react";
+import { PropsWithChildren, useState } from "react";
 import { Drawer } from "vaul";
 import { useGroceryList } from "../providers/grocery-list";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -9,15 +9,11 @@ import {
   AddGroceryListItemSchema,
 } from "../types";
 
-export function AddGroceryListItemDrawer() {
+export function AddGroceryListItemDrawer({ children }: PropsWithChildren) {
   const [open, setOpen] = useState(false);
   return (
     <Drawer.Root open={open} onOpenChange={setOpen}>
-      {!open ? (
-        <Drawer.Trigger className="border rounded-lg p-2 w-full flex justify-center items-center gap-4 text-lg cursor-pointer">
-          <PlusIcon size={16} /> Add Item
-        </Drawer.Trigger>
-      ) : null}
+      {!open ? <Drawer.Trigger asChild>{children}</Drawer.Trigger> : null}
 
       <Drawer.Portal>
         <Drawer.Overlay className="fixed inset-0 bg-black/40" />
