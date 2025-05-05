@@ -3,7 +3,7 @@ import { ArrowLeftIcon, PlusIcon } from "lucide-react";
 import Link from "next/link";
 import { GroceryListTable } from "./components/grocery-list-table";
 import { Drawer } from "vaul";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
@@ -31,7 +31,6 @@ export default function FoodShoppingLists() {
           </Link>
           <div className="flex justify-between items-baseline">
             <p className="text-2xl font-semibold">Grocery list</p>
-            {/* <h1 className="text-2xl font-semibold">{groceryList.name}</h1> */}
           </div>
         </header>
 
@@ -63,19 +62,14 @@ function AddGroceryListItemDrawer() {
     },
   });
 
-  useEffect(() => {
-    console.log("errors", form.formState.errors);
-  }, [form.formState.errors]);
-
   return (
     <Drawer.Root open={open} onOpenChange={setOpen}>
       {!open ? (
-        <Drawer.Trigger className="border rounded-lg p-2 w-full flex justify-center items-center gap-4 text-lg">
+        <Drawer.Trigger className="border rounded-lg p-2 w-full flex justify-center items-center gap-4 text-lg cursor-pointer">
           <PlusIcon size={16} /> Add Item
         </Drawer.Trigger>
       ) : null}
 
-      {/* {open && ( */}
       <Drawer.Portal>
         <Drawer.Overlay className="fixed inset-0 bg-black/40" />
         <Drawer.Content
@@ -128,7 +122,7 @@ function AddGroceryListItemDrawer() {
               </div>
               <button
                 type="submit"
-                className="border rounded-lg p-2 w-full flex justify-center items-center gap-4 text-lg"
+                className="border rounded-lg p-2 w-full flex justify-center items-center gap-4 text-lg cursor-pointer"
               >
                 <PlusIcon size={16} />
                 Add Item
@@ -137,7 +131,6 @@ function AddGroceryListItemDrawer() {
           </div>
         </Drawer.Content>
       </Drawer.Portal>
-      {/* )} */}
     </Drawer.Root>
   );
 }

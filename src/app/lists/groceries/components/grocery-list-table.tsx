@@ -7,6 +7,8 @@ import {
   useReactTable,
 } from "@tanstack/react-table";
 import { useGroceryList } from "../providers/grocery-list";
+import { Drawer } from "vaul";
+import { MinusIcon, PlusIcon, Trash2Icon } from "lucide-react";
 
 // type GroceryListTableProps = {
 //   groceryList: GroceryList;
@@ -48,13 +50,48 @@ export function GroceryListTable() {
         </thead>
         <tbody>
           {table.getRowModel().rows.map((row) => (
-            <tr key={row.id}>
-              {row.getVisibleCells().map((cell) => (
-                <td key={cell.id} className="py-2">
-                  {flexRender(cell.column.columnDef.cell, cell.getContext())}
-                </td>
-              ))}
-            </tr>
+            <Drawer.Root key={row.id}>
+              <Drawer.Trigger asChild>
+                <tr key={row.id}>
+                  {row.getVisibleCells().map((cell) => (
+                    <td key={cell.id} className="py-2">
+                      {flexRender(
+                        cell.column.columnDef.cell,
+                        cell.getContext()
+                      )}
+                    </td>
+                  ))}
+                </tr>
+              </Drawer.Trigger>
+              <Drawer.Portal>
+                <Drawer.Overlay className="fixed inset-0 bg-black/40" />
+                <Drawer.Content className="fixed h-fit bottom-0 left-0 right-0 bg-white outline-none rounded-t-lg">
+                  <div className="max-w-3xl mx-auto relative px-4 py-8 ">
+                    <button className="absolute top-4 right-4 text-red-500 p-2">
+                      <Trash2Icon />
+                    </button>
+                    <Drawer.Title className="font-semibold text-3xl mb-8 text-center">
+                      {row.original.name}
+                    </Drawer.Title>
+                    {/* <div className="mb-4">
+                      <p className="text-xl">
+                        Quantity: {row.original.quantity}
+                      </p>
+                    </div> */}
+                    <div className="flex gap-12 items-center">
+                      <button className="flex-1 flex justify-center border rounded py-2">
+                        <MinusIcon />
+                      </button>
+                      <span className="text-6xl">{row.original.quantity}</span>
+
+                      <button className="flex-1 border rounded flex justify-center py-2">
+                        <PlusIcon />
+                      </button>
+                    </div>
+                  </div>
+                </Drawer.Content>
+              </Drawer.Portal>
+            </Drawer.Root>
           ))}
         </tbody>
       </table>
