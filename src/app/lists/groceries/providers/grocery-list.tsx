@@ -1,9 +1,10 @@
 import { createContext, PropsWithChildren, useContext, useState } from "react";
-import { GroceryList, GroceryListItem } from "../page";
+import { GroceryList, GroceryListItem } from "../types";
 
 export type GroceryListContextType = {
   items: GroceryListItem[];
   addItem: (item: Omit<GroceryListItem, "id">) => void;
+  editItem: (args: { itemId: string; item: Partial<GroceryListItem> }) => void;
   removeItem: (itemId: string) => void;
   setItemQuantity: (args: { itemId: string; quantity: number }) => void;
 };
@@ -49,7 +50,7 @@ export function GroceryListProvider(props: PropsWithChildren) {
   }: {
     name: string;
     quantity: number;
-    unitPrice?: number;
+    unitPrice: number;
   }) => {
     const newItem: GroceryListItem = {
       id: crypto.randomUUID(),
@@ -63,6 +64,20 @@ export function GroceryListProvider(props: PropsWithChildren) {
   const removeItem = (itemId: string) => {
     setItems((prev) => {
       return prev.filter((item) => item.id !== itemId);
+    });
+  };
+
+  const editItem = (args: {
+    itemId: string;
+    item: Partial<GroceryListItem>;
+  }) => {
+    setItems((prev) => {
+      return prev.map((i) => {
+        if (i.id === args.itemId) {
+          return { ...i, ...args.item };
+        }
+        return i;
+      });
     });
   };
 
@@ -84,7 +99,7 @@ export function GroceryListProvider(props: PropsWithChildren) {
   };
   return (
     <GroceryListContext.Provider
-      value={{ items, addItem, removeItem, setItemQuantity }}
+      value={{ items, addItem, removeItem, setItemQuantity, editItem }}
     >
       {props.children}
     </GroceryListContext.Provider>
