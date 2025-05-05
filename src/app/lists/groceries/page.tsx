@@ -3,16 +3,11 @@ import { ArrowLeftIcon, PlusIcon } from "lucide-react";
 import Link from "next/link";
 import { GroceryListTable } from "./components/grocery-list-table";
 import { Drawer } from "vaul";
-import {
-  createContext,
-  PropsWithChildren,
-  useContext,
-  useEffect,
-  useState,
-} from "react";
+import { useEffect, useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
+import { GroceryListProvider, useGroceryList } from "./providers/grocery-list";
 
 export type GroceryList = {
   id: string;
@@ -25,66 +20,6 @@ export type GroceryListItem = {
   name: string;
   quantity: number;
 };
-
-const initGroceryList: GroceryList = {
-  id: crypto.randomUUID(),
-  name: "my first list",
-  items: [
-    {
-      id: crypto.randomUUID(),
-      name: "Milk",
-      quantity: 2,
-    },
-    {
-      id: crypto.randomUUID(),
-      name: "Eggs",
-      quantity: 12,
-    },
-  ],
-};
-
-type GroceryListContextType = {
-  items: GroceryListItem[];
-  addItem: (item: Omit<GroceryListItem, "id">) => void;
-  removeItem: (itemId: string) => void;
-};
-
-export const GroceryListContext = createContext<GroceryListContextType | null>(
-  null
-);
-
-export function useGroceryList() {
-  const groceryList = useContext(GroceryListContext);
-  if (!groceryList) {
-    throw new Error("GroceryListContext is not provided");
-  }
-  return groceryList;
-}
-
-function GroceryListProvider(props: PropsWithChildren) {
-  const [items, setItems] = useState<GroceryListItem[]>(initGroceryList.items);
-
-  const addItem = ({ name, quantity }: { name: string; quantity: number }) => {
-    const newItem: GroceryListItem = {
-      id: crypto.randomUUID(),
-      name,
-      quantity,
-    };
-    setItems((prev) => [...prev, newItem]);
-  };
-
-  const removeItem = (itemId: string) => {
-    setItems((prev) => {
-      return prev.filter((item) => item.id !== itemId);
-    });
-  };
-
-  return (
-    <GroceryListContext.Provider value={{ items, addItem, removeItem }}>
-      {props.children}
-    </GroceryListContext.Provider>
-  );
-}
 
 export default function FoodShoppingLists() {
   return (

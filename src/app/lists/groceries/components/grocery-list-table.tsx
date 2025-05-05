@@ -1,11 +1,12 @@
 "use client";
-import { GroceryListItem, useGroceryList } from "../page";
+import { GroceryListItem } from "../page";
 import {
   ColumnDef,
   flexRender,
   getCoreRowModel,
   useReactTable,
 } from "@tanstack/react-table";
+import { useGroceryList } from "../providers/grocery-list";
 
 // type GroceryListTableProps = {
 //   groceryList: GroceryList;
