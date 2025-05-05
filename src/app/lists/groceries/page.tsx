@@ -8,7 +8,6 @@ import {
   PropsWithChildren,
   useContext,
   useEffect,
-  useRef,
   useState,
 } from "react";
 import { Controller, useForm } from "react-hook-form";
