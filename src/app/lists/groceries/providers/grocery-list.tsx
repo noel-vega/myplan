@@ -5,6 +5,7 @@ export type GroceryListContextType = {
   items: GroceryListItem[];
   addItem: (item: Omit<GroceryListItem, "id">) => void;
   removeItem: (itemId: string) => void;
+  setItemQuantity: (args: { itemId: string; quantity: number }) => void;
 };
 
 export const GroceryListContext = createContext<GroceryListContextType | null>(
@@ -54,8 +55,26 @@ export function GroceryListProvider(props: PropsWithChildren) {
     });
   };
 
+  const setItemQuantity = ({
+    itemId,
+    quantity,
+  }: {
+    itemId: string;
+    quantity: number;
+  }) => {
+    setItems((prev) => {
+      return prev.map((item) => {
+        if (item.id === itemId) {
+          return { ...item, quantity };
+        }
+        return item;
+      });
+    });
+  };
   return (
-    <GroceryListContext.Provider value={{ items, addItem, removeItem }}>
+    <GroceryListContext.Provider
+      value={{ items, addItem, removeItem, setItemQuantity }}
+    >
       {props.children}
     </GroceryListContext.Provider>
   );

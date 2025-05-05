@@ -29,6 +29,30 @@ export function GroceryListTable() {
     data: groceryList.items,
     getCoreRowModel: getCoreRowModel(),
   });
+  const handleMinusClick = ({ itemId }: { itemId: string }) => {
+    const currentQuantity = groceryList.items.find(
+      (x) => x.id === itemId
+    )?.quantity;
+    console.log("itemCount", currentQuantity);
+    if (currentQuantity === 0 || !currentQuantity) return;
+
+    const newQuantity = currentQuantity - 1;
+    if (newQuantity === 0) {
+      groceryList.removeItem(itemId);
+      return;
+    }
+    groceryList.setItemQuantity({ itemId, quantity: newQuantity });
+  };
+
+  const handlePlusClick = ({ itemId }: { itemId: string }) => {
+    const currentQuantity = groceryList.items.find(
+      (x) => x.id === itemId
+    )?.quantity;
+    console.log("itemCount", currentQuantity);
+    if (currentQuantity === 0 || !currentQuantity) return;
+    groceryList.setItemQuantity({ itemId, quantity: currentQuantity + 1 });
+  };
+
   return (
     <div className="w-full rounded-lg overflow-clip">
       <table className="w-full">
@@ -79,12 +103,22 @@ export function GroceryListTable() {
                       </p>
                     </div> */}
                     <div className="flex gap-12 items-center">
-                      <button className="flex-1 flex justify-center border rounded py-2">
+                      <button
+                        className="flex-1 flex justify-center border rounded py-2"
+                        onClick={() =>
+                          handleMinusClick({ itemId: row.original.id })
+                        }
+                      >
                         <MinusIcon />
                       </button>
                       <span className="text-6xl">{row.original.quantity}</span>
 
-                      <button className="flex-1 border rounded flex justify-center py-2">
+                      <button
+                        onClick={() =>
+                          handlePlusClick({ itemId: row.original.id })
+                        }
+                        className="flex-1 border rounded flex justify-center py-2"
+                      >
                         <PlusIcon />
                       </button>
                     </div>

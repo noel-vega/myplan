@@ -21,7 +21,7 @@ export type GroceryListItem = {
   quantity: number;
 };
 
-export default function FoodShoppingLists() {
+export default function GroceryList() {
   return (
     <GroceryListProvider>
       <div className="px-4 h-full flex flex-col py-2 max-w-2xl mx-auto">
