@@ -20,6 +20,22 @@ const columns: ColumnDef<GroceryListItem>[] = [
     header: "Name",
   },
   { accessorKey: "quantity", header: "Quantity" },
+  {
+    accessorKey: "unitPrice",
+    header: "Unit Price",
+    cell: ({ row }) => <p>${row.original.unitPrice}</p>,
+  },
+  {
+    header: "Total Price",
+    cell: ({ row }) => {
+      const totalPrice =
+        Number(row.original.unitPrice) * Number(row.original.quantity);
+      console.log(
+        `${row.original.unitPrice} * ${row.original.quantity} = ${totalPrice}`
+      );
+      return <p>$ {totalPrice}</p>;
+    },
+  },
 ];
 
 export function GroceryListTable() {

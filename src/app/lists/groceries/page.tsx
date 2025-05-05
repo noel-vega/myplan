@@ -19,6 +19,7 @@ export type GroceryListItem = {
   id: string;
   name: string;
   quantity: number;
+  unitPrice?: number;
 };
 
 export default function GroceryList() {
@@ -47,6 +48,7 @@ export default function GroceryList() {
 const AddGroceryListItemSchema = z.object({
   name: z.string().min(1, "Name is required"),
   quantity: z.number().min(1, "Quantity is required"),
+  unitPrice: z.number().min(0, "Unit price is required"),
 });
 
 type AddGroceryListItemFormValues = z.infer<typeof AddGroceryListItemSchema>;
@@ -59,6 +61,7 @@ function AddGroceryListItemDrawer() {
     defaultValues: {
       name: "",
       quantity: 1,
+      unitPrice: 0,
     },
   });
 
@@ -83,9 +86,11 @@ function AddGroceryListItemDrawer() {
             </Drawer.Title>
             <form
               onSubmit={form.handleSubmit((data) => {
+                console.log(data, "data");
                 groceryList.addItem({
                   name: data.name,
                   quantity: data.quantity,
+                  unitPrice: data.unitPrice,
                 });
                 setOpen(false);
                 form.reset();
@@ -103,6 +108,30 @@ function AddGroceryListItemDrawer() {
               </div>
 
               <div>
+                <label htmlFor="item-unit-price">Unit Price</label>
+                <Controller
+                  control={form.control}
+                  name={"unitPrice"}
+                  render={({ field }) => (
+                    <input
+                      type="number"
+                      value={field.value}
+                      onBlur={(e) => {
+                        if (!e.currentTarget.value) {
+                          field.onChange(0);
+                        }
+                      }}
+                      onChange={(e) => {
+                        field.onChange(e.currentTarget.valueAsNumber);
+                      }}
+                      id="item-unit-price"
+                      className="border rounded-lg p-2 w-full"
+                    />
+                  )}
+                />
+              </div>
+
+              <div>
                 <label htmlFor="item-quantity">Quantity</label>
                 <Controller
                   control={form.control}
@@ -111,6 +140,11 @@ function AddGroceryListItemDrawer() {
                     <input
                       type="number"
                       value={field.value}
+                      onBlur={(e) => {
+                        if (!e.currentTarget.value) {
+                          field.onChange(0);
+                        }
+                      }}
                       onChange={(e) => {
                         field.onChange(e.currentTarget.valueAsNumber);
                       }}

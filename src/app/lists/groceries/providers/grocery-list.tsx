@@ -28,11 +28,13 @@ const initGroceryList: GroceryList = {
       id: crypto.randomUUID(),
       name: "Milk",
       quantity: 2,
+      unitPrice: 4,
     },
     {
       id: crypto.randomUUID(),
-      name: "Eggs",
-      quantity: 12,
+      name: "12 Eggs",
+      quantity: 1,
+      unitPrice: 9,
     },
   ],
 };
@@ -40,11 +42,20 @@ const initGroceryList: GroceryList = {
 export function GroceryListProvider(props: PropsWithChildren) {
   const [items, setItems] = useState<GroceryListItem[]>(initGroceryList.items);
 
-  const addItem = ({ name, quantity }: { name: string; quantity: number }) => {
+  const addItem = ({
+    name,
+    quantity,
+    unitPrice,
+  }: {
+    name: string;
+    quantity: number;
+    unitPrice?: number;
+  }) => {
     const newItem: GroceryListItem = {
       id: crypto.randomUUID(),
       name,
       quantity,
+      unitPrice,
     };
     setItems((prev) => [...prev, newItem]);
   };
