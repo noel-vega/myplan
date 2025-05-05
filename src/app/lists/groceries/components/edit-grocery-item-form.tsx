@@ -19,7 +19,10 @@ export function EditGroceryItemForm(props: Props) {
   });
   return (
     <div className="max-w-3xl mx-auto relative px-4 py-8 ">
-      <button className="absolute top-4 right-4 text-red-500 p-2">
+      <button
+        onClick={() => groceryList.removeItem(props.item.id)}
+        className="absolute top-4 right-4 text-red-500 p-2"
+      >
         <Trash2Icon />
       </button>
       <Drawer.Title className="font-semibold text-xl mb-4">
