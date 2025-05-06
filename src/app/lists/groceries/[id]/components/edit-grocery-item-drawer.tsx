@@ -126,6 +126,7 @@ export function EditGroceryItemForm(props: Props) {
             onClick={(e) => {
               e.stopPropagation();
               handleAddItemToCart();
+              props.onSuccess?.();
             }}
           >
             <ShoppingCartIcon size={16} />
