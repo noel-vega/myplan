@@ -1,5 +1,5 @@
 import { createContext, useContext, useState } from "react";
-import { Routine, RoutineTask } from "../lists/routines/types";
+import { Routine, RoutineTask } from "../routines/types";
 
 type RoutineListContext = {
   routines: Routine[];

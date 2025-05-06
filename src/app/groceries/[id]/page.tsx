@@ -15,7 +15,7 @@ export default function GroceryListPage() {
       value={tab}
       onValueChange={setTab}
       defaultValue="grocery-list"
-      className="flex-1 flex flex-col"
+      className="flex flex-col p-4 h-full"
     >
       <Tabs.List className="flex gap-4 mb-4 bg-gray-100 p-1 rounded-lg">
         <Tabs.Trigger
@@ -46,7 +46,6 @@ export default function GroceryListPage() {
 }
 
 function GroceryList() {
-  console.log("GroceryList rendered");
   const params = useParams();
   const groceryList = useGroceryList({ id: Number(params.id) });
 

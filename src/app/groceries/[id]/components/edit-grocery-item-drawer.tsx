@@ -121,7 +121,8 @@ export function EditGroceryItemForm(props: Props) {
             <EditIcon size={16} />
             Update Item
           </button>
-          <div
+          <button
+            type="button"
             className="border rounded-lg p-2 w-full flex justify-center items-center gap-4 text-lg cursor-pointer flex-1"
             onClick={(e) => {
               e.stopPropagation();
@@ -131,7 +132,7 @@ export function EditGroceryItemForm(props: Props) {
           >
             <ShoppingCartIcon size={16} />
             Add to cart
-          </div>
+          </button>
         </div>
       </form>
     </div>

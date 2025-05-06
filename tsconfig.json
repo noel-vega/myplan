@@ -27,7 +27,7 @@
     "**/*.ts",
     "**/*.tsx",
     ".next/types/**/*.ts",
-    "src/app/lists/groceries/[id]/components/edit-grocery-item-drawer.tsx"
+    "src/app/groceries/[id]/components/edit-grocery-item-drawer.tsx"
   ],
   "exclude": ["node_modules"]
 }
