@@ -60,3 +60,29 @@ export async function deleteGroceryListItem({ id }: { id: number }) {
   )[0];
   return deletedGroceryListItem;
 }
+
+export async function addGroceryItemToCart({ itemId }: { itemId: number }) {
+  const updatedGroceryListItem = (
+    await db
+      .update(groceryListItemsTable)
+      .set({ inCart: true })
+      .where(eq(groceryListItemsTable.id, itemId))
+      .returning()
+  )[0];
+  return updatedGroceryListItem;
+}
+
+export async function removeGroceryItemFromCart({
+  itemId,
+}: {
+  itemId: number;
+}) {
+  const updatedGroceryListItem = (
+    await db
+      .update(groceryListItemsTable)
+      .set({ inCart: false })
+      .where(eq(groceryListItemsTable.id, itemId))
+      .returning()
+  )[0];
+  return updatedGroceryListItem;
+}

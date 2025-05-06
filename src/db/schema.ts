@@ -17,6 +17,7 @@ export const groceryListItemsTable = sqliteTable("grocery_list_item", {
   name: text().notNull(),
   quantity: int().notNull(),
   unitPrice: int().notNull(),
+  inCart: int({ mode: "boolean" }).notNull().default(false),
   groceryListId: int()
     .notNull()
     .references(() => groceryListTable.id, { onDelete: "cascade" }),

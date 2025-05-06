@@ -6,7 +6,7 @@ type Props = {
 };
 export function BackButton(props: Props) {
   return (
-    <Link href={props.href} className="flex items-center gap-1 py-2 mb-4">
+    <Link href={props.href} className="flex items-center gap-1 py-2 mb-4 w-fit">
       <ArrowLeftIcon size={16} /> Back
     </Link>
   );

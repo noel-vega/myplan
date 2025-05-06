@@ -1,6 +1,6 @@
 import { Drawer } from "vaul";
-import { PropsWithChildren } from "react";
-import { EditIcon, Trash2Icon } from "lucide-react";
+import { PropsWithChildren, useState } from "react";
+import { EditIcon, ShoppingCartIcon, Trash2Icon } from "lucide-react";
 import { Controller, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { GroceryListItem, GroceryListItemSchema } from "../../types";
@@ -21,6 +21,13 @@ export function EditGroceryItemForm(props: Props) {
     defaultValues: props.item,
   });
 
+  const handleAddItemToCart = () => {
+    updateGroceryListItem.mutate({
+      itemId: props.item.id,
+      item: { inCart: true },
+    });
+  };
+
   return (
     <div className="max-w-3xl mx-auto relative px-4 py-8 ">
       <button
@@ -37,6 +44,7 @@ export function EditGroceryItemForm(props: Props) {
       </Drawer.Title>
       <form
         onSubmit={form.handleSubmit((data) => {
+          console.log("edit item", data);
           const { id, ...rest } = data;
           updateGroceryListItem.mutate({
             itemId: id,
@@ -105,14 +113,46 @@ export function EditGroceryItemForm(props: Props) {
             )}
           />
         </div>
-        <button
-          type="submit"
-          className="border rounded-lg p-2 w-full flex justify-center items-center gap-4 text-lg cursor-pointer"
-        >
-          <EditIcon size={16} />
-          Update Item
-        </button>
+        <div className="flex gap-4">
+          <button
+            type="submit"
+            className="border rounded-lg p-2 w-full flex justify-center items-center gap-4 text-lg cursor-pointer flex-1"
+          >
+            <EditIcon size={16} />
+            Update Item
+          </button>
+          <div
+            className="border rounded-lg p-2 w-full flex justify-center items-center gap-4 text-lg cursor-pointer flex-1"
+            onClick={(e) => {
+              e.stopPropagation();
+              handleAddItemToCart();
+            }}
+          >
+            <ShoppingCartIcon size={16} />
+            Add to cart
+          </div>
+        </div>
       </form>
     </div>
+  );
+}
+
+export function EditGroceryItemDrawer(
+  props: { item: GroceryListItem } & PropsWithChildren
+) {
+  const [open, setOpen] = useState(false);
+  return (
+    <Drawer.Root open={open} onOpenChange={setOpen}>
+      <Drawer.Trigger asChild>{props.children}</Drawer.Trigger>
+      <Drawer.Portal>
+        <Drawer.Overlay className="fixed inset-0 bg-black/40" />
+        <Drawer.Content className="fixed h-fit bottom-0 left-0 right-0 bg-white outline-none rounded-t-lg">
+          <EditGroceryItemForm
+            onSuccess={() => setOpen(false)}
+            item={props.item}
+          />
+        </Drawer.Content>
+      </Drawer.Portal>
+    </Drawer.Root>
   );
 }
