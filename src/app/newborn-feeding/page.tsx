@@ -52,18 +52,18 @@ function AddFeedingDrawer({
         <Drawer.Overlay className="fixed inset-0 bg-black/40" />
         <Drawer.Content
           className={
-            "fixed bottom-0 left-0 right-0 bg-white px-4 py-8 rounded-t-lg outline-none"
+            "fixed bottom-0 left-0 right-0 bg-white p-8 rounded-t-lg outline-none"
           }
         >
-          <div className="max-w-3xl mx-auto">
-            <Drawer.Title />
-            <div className="flex justify-center py-2">
+          <div className="max-w-3xl mx-auto space-y-8">
+            <Drawer.Title className="py-0" />
+            <div className="flex justify-between text-2xl">
               <div className="flex flex-col gap-1">
                 <label>Time</label>
                 <input
                   type="time"
                   value={time}
-                  className="text-xl"
+                  className="w-fit"
                   onChange={(e) => {
                     setTime(e.currentTarget.value);
                   }}
@@ -74,7 +74,7 @@ function AddFeedingDrawer({
                 <input
                   type="number"
                   value={2}
-                  className="text-xl w-20 px-2"
+                  className="w-20 px-2"
                   onChange={(e) => {
                     console.log(e.currentTarget.value);
                   }}
@@ -83,9 +83,9 @@ function AddFeedingDrawer({
             </div>
             <button
               onClick={() => onSubmit({ ounces: 1, time: new Date() })}
-              className="border w-full p-4 rounded-lg"
+              className="border w-full p-4 rounded-lg text-xl"
             >
-              Add Feeding
+              Submit
             </button>
           </div>
         </Drawer.Content>
