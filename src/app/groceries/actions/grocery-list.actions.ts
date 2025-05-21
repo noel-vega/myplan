@@ -4,9 +4,9 @@ import {
   groceryListItemsTable,
   GroceryListItemType,
   groceryListTable,
+  InsertGroceryListItemType,
 } from "@/db/schema";
 import { eq } from "drizzle-orm";
-import { AddGroceryListItemFormValues } from "../types";
 
 export async function getGroceryList({ id }: { id: number }) {
   const groceryList = await db.query.groceryListTable.findFirst({
@@ -19,17 +19,12 @@ export async function getGroceryList({ id }: { id: number }) {
 }
 
 export async function addGroceryListItem({
-  groceryListId,
   item,
 }: {
-  groceryListId: number;
-  item: AddGroceryListItemFormValues;
+  item: InsertGroceryListItemType;
 }) {
   const newGroceryListItem = (
-    await db
-      .insert(groceryListItemsTable)
-      .values({ groceryListId, ...item })
-      .returning()
+    await db.insert(groceryListItemsTable).values(item).returning()
   )[0];
   return newGroceryListItem;
 }

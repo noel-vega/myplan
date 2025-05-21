@@ -1,6 +1,6 @@
 import { Drawer } from "vaul";
 import { PropsWithChildren, useState } from "react";
-import { EditIcon, ShoppingCartIcon, Trash2Icon } from "lucide-react";
+import { ArrowLeftIcon, Trash2Icon } from "lucide-react";
 import { Controller, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useUpdateGroceryListItem } from "../../hooks/useUpdateGroceryListItem";
@@ -17,7 +17,7 @@ type Props = {
   onSuccess?: () => void;
 } & PropsWithChildren;
 
-export function EditGroceryItemForm(props: Props) {
+export function EditGroceryCartItemForm(props: Props) {
   const deleteGroceryListItem = useDeleteGroceryListItem();
   const updateGroceryListItem = useUpdateGroceryListItem();
 
@@ -28,10 +28,10 @@ export function EditGroceryItemForm(props: Props) {
     defaultValues: props.item,
   });
 
-  const handleAddItemToCart = () => {
+  const moveToGroceryList = () => {
     updateGroceryListItem.mutate({
       itemId: props.item.id,
-      item: { inCart: true },
+      item: { inCart: false },
     });
   };
 
@@ -122,23 +122,16 @@ export function EditGroceryItemForm(props: Props) {
         </div>
         <div className="flex gap-4">
           <button
-            type="submit"
-            className="border rounded-lg p-2 w-full flex justify-center items-center gap-4 text-lg cursor-pointer flex-1"
-          >
-            <EditIcon size={16} />
-            Update Item
-          </button>
-          <button
             type="button"
             className="border rounded-lg p-2 w-full flex justify-center items-center gap-4 text-lg cursor-pointer flex-1"
             onClick={(e) => {
               e.stopPropagation();
-              handleAddItemToCart();
+              moveToGroceryList();
               props.onSuccess?.();
             }}
           >
-            <ShoppingCartIcon size={16} />
-            Add to cart
+            <ArrowLeftIcon size={16} />
+            Move to Grocery List
           </button>
         </div>
       </form>
@@ -146,7 +139,7 @@ export function EditGroceryItemForm(props: Props) {
   );
 }
 
-export function EditGroceryItemDrawer(
+export function GroceryCartItemDrawer(
   props: { item: GroceryListItemType } & PropsWithChildren
 ) {
   const [open, setOpen] = useState(false);
@@ -156,7 +149,7 @@ export function EditGroceryItemDrawer(
       <Drawer.Portal>
         <Drawer.Overlay className="fixed inset-0 bg-black/40" />
         <Drawer.Content className="fixed h-fit bottom-0 left-0 right-0 bg-white outline-none rounded-t-lg">
-          <EditGroceryItemForm
+          <EditGroceryCartItemForm
             onSuccess={() => setOpen(false)}
             item={props.item}
           />

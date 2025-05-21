@@ -3,6 +3,7 @@ import Link from "next/link";
 import { PropsWithChildren } from "react";
 import {
   BrushCleaningIcon,
+  MilkIcon,
   ShoppingBasketIcon,
   SproutIcon,
   TicketIcon,
@@ -26,6 +27,12 @@ function CategoryList() {
           <ShoppingBasketIcon />
           Grocery List
           {/* <div>{groceryList.data.items.length > 0 && groceryList.items.length}</div> */}
+        </div>
+      </CategoryListItem>
+      <CategoryListItem href="/newborn-feeding">
+        <div className="flex items-center gap-2 text-lg">
+          <MilkIcon />
+          Newborn Feeding
         </div>
       </CategoryListItem>
       <CategoryListItem href="/routines">

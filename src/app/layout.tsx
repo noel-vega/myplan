@@ -32,8 +32,8 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={`antialiased h-dvh flex flex-col`}>
-        <nav className="border-b hidden sm:block">
+      <body className={`antialiased h-dvh flex flex-col sm:flex-row`}>
+        <nav className="border-b hidden sm:block border-r w-52">
           <ul className="flex text-lg max-w-3xl mx-auto w-full">
             <NavLink href="/" className="py-2">
               Home
@@ -47,7 +47,7 @@ export default function RootLayout({
           </RoutineListProvider>
         </QueryClientProvider>
 
-        <nav className="border-t sm:hidden">
+        <nav className="border-t sm:hidden bg-gray-50">
           <ul className="flex text-lg max-w-3xl mx-auto w-full">
             <NavLink
               href="/"

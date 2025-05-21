@@ -7,13 +7,12 @@ import {
   Row,
   useReactTable,
 } from "@tanstack/react-table";
-import { GroceryListItem } from "../../../types";
 import { useState } from "react";
 import { columns } from "./columns";
 import { EditGroceryItemDrawer } from "../edit-grocery-item-drawer";
+import { GroceryListItemType } from "@/db/schema";
 
-export function GroceryListTable({ data }: { data: GroceryListItem[] }) {
-  console.log("GroceryListTable rendered");
+export function GroceryListTable({ data }: { data: GroceryListItemType[] }) {
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
 
   const table = useReactTable({
@@ -27,38 +26,8 @@ export function GroceryListTable({ data }: { data: GroceryListItem[] }) {
     },
   });
 
-  // const handleMinusClick = ({ itemId }: { itemId: string }) => {
-  //   const currentQuantity = groceryList.items.find(
-  //     (x) => x.id === itemId
-  //   )?.quantity;
-  //   console.log("itemCount", currentQuantity);
-  //   if (currentQuantity === 0 || !currentQuantity) return;
-
-  //   const newQuantity = currentQuantity - 1;
-  //   if (newQuantity === 0) {
-  //     groceryList.removeItem(itemId);
-  //     return;
-  //   }
-  //   groceryList.setItemQuantity({ itemId, quantity: newQuantity });
-  // };
-
-  // const handlePlusClick = ({ itemId }: { itemId: string }) => {
-  //   const currentQuantity = groceryList.items.find(
-  //     (x) => x.id === itemId
-  //   )?.quantity;
-  //   console.log("itemCount", currentQuantity);
-  //   if (currentQuantity === 0 || !currentQuantity) return;
-  //   groceryList.setItemQuantity({ itemId, quantity: currentQuantity + 1 });
-  // };
-
   return (
     <>
-      {/* {groceryList.isLoading ? (
-        <div className="flex flex-col items-center justify-center py-8 gap-4">
-          <div className="h-16 w-16 animate-spin border-4 border-gray-300 border-t-blue-500 rounded-full" />
-          <p className="text-lg">Loading grocery list</p>
-        </div>
-      ) : ( */}
       <div>
         <input
           type="text"
@@ -98,12 +67,11 @@ export function GroceryListTable({ data }: { data: GroceryListItem[] }) {
           </table>
         </div>
       </div>
-      {/* )} */}
     </>
   );
 }
 
-function GroceryListRow({ row }: { row: Row<GroceryListItem> }) {
+function GroceryListRow({ row }: { row: Row<GroceryListItemType> }) {
   return (
     <EditGroceryItemDrawer item={row.original} key={row.id}>
       <tr className="border-b border-gray-200 even:bg-gray-50 hover:bg-indigo-200/20 hover:cursor-pointer">

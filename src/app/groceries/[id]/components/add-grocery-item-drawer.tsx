@@ -3,14 +3,13 @@ import { PropsWithChildren, useState } from "react";
 import { Drawer } from "vaul";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Controller, useForm } from "react-hook-form";
-import {
-  AddGroceryListItemFormValues,
-  AddGroceryListItemSchema,
-} from "../../types";
 import { useAddGroceryListItem } from "../../hooks/useAddGroceryListItem";
+import {
+  insertGroceryListItemSchema,
+  InsertGroceryListItemType,
+} from "@/db/schema";
 
 export function AddGroceryListItemDrawer({
-  groceryListId,
   children,
 }: { groceryListId: number } & PropsWithChildren) {
   const [open, setOpen] = useState(false);
@@ -29,10 +28,7 @@ export function AddGroceryListItemDrawer({
             <Drawer.Title className="mb-4 font-semibold text-xl">
               Add item to grocery list
             </Drawer.Title>
-            <AddGroceryListItemForm
-              groceryListId={groceryListId}
-              onSuccess={() => setOpen(false)}
-            />
+            <AddGroceryListItemForm onSuccess={() => setOpen(false)} />
           </div>
         </Drawer.Content>
       </Drawer.Portal>
@@ -40,24 +36,16 @@ export function AddGroceryListItemDrawer({
   );
 }
 
-function AddGroceryListItemForm({
-  groceryListId,
-  onSuccess,
-}: {
-  groceryListId: number;
-  onSuccess?: () => void;
-}) {
+function AddGroceryListItemForm({ onSuccess }: { onSuccess?: () => void }) {
   const addItem = useAddGroceryListItem();
-  const form = useForm<AddGroceryListItemFormValues>({
-    resolver: zodResolver(AddGroceryListItemSchema),
+  const form = useForm<InsertGroceryListItemType>({
+    resolver: zodResolver(insertGroceryListItemSchema),
   });
   return (
     <form
-      onSubmit={form.handleSubmit((data) => {
-        console.log(data, "data");
+      onSubmit={form.handleSubmit((item) => {
         addItem.mutate({
-          groceryListId: groceryListId,
-          item: data,
+          item,
         });
 
         onSuccess?.();

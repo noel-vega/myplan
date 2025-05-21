@@ -7,6 +7,7 @@ import { useParams } from "next/navigation";
 import * as Tabs from "@radix-ui/react-tabs";
 import { useState } from "react";
 import { cn } from "@/lib/cn";
+import { GroceryCartTable } from "./components/cart-list-table";
 
 export default function GroceryListPage() {
   const [tab, setTab] = useState("grocery-list");
@@ -15,7 +16,7 @@ export default function GroceryListPage() {
       value={tab}
       onValueChange={setTab}
       defaultValue="grocery-list"
-      className="flex flex-col p-4 h-full"
+      className="flex flex-col p-4 h-full max-w-3xl mx-auto w-full"
     >
       <Tabs.List className="flex gap-4 mb-4 bg-gray-100 p-1 rounded-lg">
         <Tabs.Trigger
@@ -38,8 +39,20 @@ export default function GroceryListPage() {
       <Tabs.Content value="grocery-list" className="flex-1">
         <GroceryList />
       </Tabs.Content>
-      <Tabs.Content value="cart" className="flexl-1">
-        <GroceryCart />
+      <Tabs.Content value="cart" className="flex-1">
+        <div className="flex flex-col h-full">
+          <section className="flex-1">
+            <GroceryCartTable />
+          </section>
+
+          <button
+            className="border rounded-lg p-2 flex items-center justify-center gap-4 text-lg"
+            onClick={() => {}}
+          >
+            <PlusIcon size={16} />
+            New Cart
+          </button>
+        </div>
       </Tabs.Content>
     </Tabs.Root>
   );
@@ -72,7 +85,10 @@ function GroceryList() {
 function GroceryListTotal() {
   const groceryList = useGroceryList({ id: 1 });
   const total = groceryList.data?.items.reduce((acc, item) => {
-    return acc + (item.unitPrice || 0) * item.quantity;
+    if (!item.inCart) {
+      return acc + item.unitPrice * item.quantity;
+    }
+    return acc;
   }, 0);
   console.log("total", total);
 
@@ -83,17 +99,5 @@ function GroceryListTotal() {
   }
   return (
     <p className="text-2xl text-right font-semibold py-4">Total: ${total}</p>
-  );
-}
-
-function GroceryCart() {
-  const groceryList = useGroceryList({ id: 1 });
-  const itemsInCart = groceryList.data?.items.filter((x) => x.inCart) ?? [];
-  return (
-    <div className="flex-1">
-      {itemsInCart.map((item) => (
-        <div key={item.id}>{item.name}</div>
-      ))}
-    </div>
   );
 }

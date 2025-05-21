@@ -1,5 +1,11 @@
 import { relations } from "drizzle-orm";
 import { int, sqliteTable, text } from "drizzle-orm/sqlite-core";
+import {
+  createInsertSchema,
+  createSelectSchema,
+  createUpdateSchema,
+} from "drizzle-zod";
+import { z } from "zod";
 
 export const groceryListTable = sqliteTable("grocery_list", {
   id: int().primaryKey({ autoIncrement: true }),
@@ -23,8 +29,22 @@ export const groceryListItemsTable = sqliteTable("grocery_list_item", {
     .references(() => groceryListTable.id, { onDelete: "cascade" }),
 });
 
-export type GroceryListItemType = typeof groceryListItemsTable.$inferSelect;
-export type AddGroceryListItemType = Omit<GroceryListItemType, "id">;
+export const insertGroceryListItemSchema = createInsertSchema(
+  groceryListItemsTable
+);
+export type InsertGroceryListItemType = z.infer<
+  typeof insertGroceryListItemSchema
+>;
+
+export const groceryListItemSchema = createSelectSchema(groceryListItemsTable);
+export type GroceryListItemType = z.infer<typeof groceryListItemSchema>;
+
+export const updateGroceryListItemSchema = createUpdateSchema(
+  groceryListItemsTable
+);
+export type UpdateGroceryListItemType = z.infer<
+  typeof updateGroceryListItemSchema
+>;
 
 export const groceryListItemsRelations = relations(
   groceryListItemsTable,
