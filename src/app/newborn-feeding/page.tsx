@@ -57,13 +57,13 @@ function AddFeedingDrawer({
         >
           <div className="max-w-3xl mx-auto">
             <Drawer.Title />
-            <div className="flex justify-center gap-16 py-8">
+            <div className="flex justify-center py-2">
               <div className="flex flex-col gap-1">
                 <label>Time</label>
                 <input
                   type="time"
                   value={time}
-                  className="text-5xl"
+                  className="text-xl"
                   onChange={(e) => {
                     setTime(e.currentTarget.value);
                   }}
@@ -74,7 +74,7 @@ function AddFeedingDrawer({
                 <input
                   type="number"
                   value={2}
-                  className="text-5xl w-20 px-2"
+                  className="text-xl w-20 px-2"
                   onChange={(e) => {
                     console.log(e.currentTarget.value);
                   }}
