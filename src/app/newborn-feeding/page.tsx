@@ -8,8 +8,9 @@ import {
 import { useState } from "react";
 import { Drawer } from "vaul";
 import { format, parse } from "date-fns";
-import { PlusIcon } from "lucide-react";
+import { ChevronDownIcon, PlusIcon } from "lucide-react";
 import { SelectProvider } from "./select-context";
+import * as Select from "@radix-ui/react-select";
 
 export default function Page() {
   const date = new Date();
@@ -17,7 +18,7 @@ export default function Page() {
   console.log(feedings);
   return (
     <SelectProvider>
-      <div className="border h-full flex flex-col max-w-3xl mx-auto p-4">
+      <div className="h-full flex flex-col max-w-3xl mx-auto p-4">
         <section className="flex-1">
           <div className="flex items-end justify-between text-2xl font-semibold mb-4">
             <p className="text-3xl">Feeding</p>
@@ -44,6 +45,8 @@ function AddFeedingDrawer({
 }: {
   onSubmit: (feeding: FeedingType) => void;
 }) {
+  const [type, setType] = useState<"Breast" | "Formula">("Breast");
+  const [minutes, setMinutes] = useState(20);
   const [open, setOpen] = useState(false);
   const [time, setTime] = useState(format(new Date(), "HH:mm"));
   const [ounces, setOunces] = useState(2);
@@ -63,34 +66,88 @@ function AddFeedingDrawer({
         >
           <div className="max-w-3xl mx-auto space-y-8">
             <Drawer.Title className="py-0" />
-            <div className="flex justify-between text-2xl">
+            <div className="flex justify-between text-xl">
               <div className="flex flex-col gap-1">
                 <label>Time</label>
                 <input
                   type="time"
                   value={time}
-                  className="w-fit"
+                  className="w-fit p-2 pr-0 border rounded"
                   onChange={(e) => {
                     setTime(e.currentTarget.value);
                   }}
                 />
               </div>
               <div className="flex flex-col gap-1">
-                <label>Ounces</label>
-                <input
-                  type="number"
-                  value={ounces}
-                  className="w-20 px-2"
-                  onChange={(e) => {
-                    setOunces(Number(e.currentTarget.value));
-                  }}
-                />
+                <label>Type</label>
+                <Select.Root
+                  value={type}
+                  onValueChange={(type: "Breast" | "Formula") => setType(type)}
+                >
+                  <Select.Trigger className="flex justify-between items-center gap-2 border rounded p-2">
+                    <Select.Value />
+                    <Select.Icon>
+                      <ChevronDownIcon size={16} />
+                    </Select.Icon>
+                  </Select.Trigger>
+
+                  <Select.Portal>
+                    <Select.Content
+                      style={{ width: "var(--radix-select-trigger-width)" }}
+                      position="popper"
+                      className="bg-white p-2 w-full border rounded mt-2"
+                    >
+                      <Select.Viewport>
+                        <Select.Item value="Breast" className="relative py-1">
+                          <Select.ItemText>Breast</Select.ItemText>
+                        </Select.Item>
+
+                        <Select.Item value="Formula" className="relative py-1">
+                          <Select.ItemText>Formula</Select.ItemText>
+                        </Select.Item>
+                      </Select.Viewport>
+                    </Select.Content>
+                  </Select.Portal>
+                </Select.Root>
               </div>
+
+              {type === "Breast" && (
+                <div className="flex flex-col gap-1">
+                  <label>Minutes</label>
+                  <input
+                    type="number"
+                    value={minutes}
+                    className="w-20 p-2 border rounded"
+                    onChange={(e) => {
+                      setMinutes(Number(e.currentTarget.value));
+                    }}
+                  />
+                </div>
+              )}
+
+              {type === "Formula" && (
+                <div className="flex flex-col gap-1">
+                  <label>Ounces</label>
+                  <input
+                    type="number"
+                    value={ounces}
+                    className="w-20 px-2 border rounded p-2"
+                    onChange={(e) => {
+                      setOunces(Number(e.currentTarget.value));
+                    }}
+                  />
+                </div>
+              )}
             </div>
             <button
               type="button"
               onClick={() => {
-                onSubmit({ ounces, time: parse(time, "HH:mm", new Date()) });
+                const parsedTime = parse(time, "HH:mm", new Date());
+                if (type === "Breast") {
+                  onSubmit({ time: parsedTime, feeding: { type, minutes } });
+                } else {
+                  onSubmit({ time: parsedTime, feeding: { type, ounces } });
+                }
                 setOpen(false);
               }}
               className="border w-full p-4 rounded-lg text-xl"
@@ -106,7 +163,9 @@ function AddFeedingDrawer({
 
 type FeedingType = {
   time: Date;
-  ounces: number;
+  feeding:
+    | { type: "Breast"; minutes: number }
+    | { type: "Formula"; ounces: number };
 };
 
 const columns: ColumnDef<FeedingType>[] = [
@@ -115,7 +174,17 @@ const columns: ColumnDef<FeedingType>[] = [
     header: "Time",
     cell: ({ row }) => <p>{format(row.original.time, "hh:mm a")}</p>,
   },
-  { accessorKey: "ounces", header: "Ounces" },
+  {
+    accessorKey: "feeding",
+    header: "Feeding",
+    cell: ({ row }) => {
+      if (row.original.feeding.type === "Breast") {
+        return <p>Breast {row.original.feeding.minutes} min.</p>;
+      } else {
+        return <p>Formula {row.original.feeding.ounces} oz</p>;
+      }
+    },
+  },
 ];
 
 function FeedingTable({ data }: { data: FeedingType[] }) {
