@@ -44,11 +44,12 @@ function AddFeedingDrawer({
 }: {
   onSubmit: (feeding: FeedingType) => void;
 }) {
+  const [open, setOpen] = useState(false);
   const [time, setTime] = useState(format(new Date(), "HH:mm"));
   const [ounces, setOunces] = useState(2);
   console.log(time);
   return (
-    <Drawer.Root>
+    <Drawer.Root open={open} onOpenChange={setOpen}>
       <Drawer.Trigger className="border w-full rounded-lg p-2 cursor-pointer flex items-center gap-2 justify-center text-xl">
         <PlusIcon size={16} />
         Feed
@@ -88,9 +89,10 @@ function AddFeedingDrawer({
             </div>
             <button
               type="button"
-              onClick={() =>
-                onSubmit({ ounces, time: parse(time, "HH:mm", new Date()) })
-              }
+              onClick={() => {
+                onSubmit({ ounces, time: parse(time, "HH:mm", new Date()) });
+                setOpen(false);
+              }}
               className="border w-full p-4 rounded-lg text-xl"
             >
               Submit
