@@ -7,7 +7,7 @@ import {
 } from "@tanstack/react-table";
 import { useState } from "react";
 import { Drawer } from "vaul";
-import { format } from "date-fns";
+import { format, parse } from "date-fns";
 import { PlusIcon } from "lucide-react";
 import { SelectProvider } from "./select-context";
 
@@ -17,15 +17,19 @@ export default function Page() {
   console.log(feedings);
   return (
     <SelectProvider>
-      <div className="border h-full border-blue-500 flex flex-col max-w-3xl mx-auto">
+      <div className="border h-full flex flex-col max-w-3xl mx-auto p-4">
         <section className="flex-1">
-          <div>{date.toLocaleDateString("en-US")}</div>
-          <FeedingTable data={[]} />
+          <div className="flex items-end justify-between text-2xl font-semibold mb-4">
+            <p className="text-3xl">Feeding</p>
+            <p className="text-lg">{date.toLocaleDateString("en-US")}</p>
+          </div>
+          <FeedingTable data={feedings} />
         </section>
 
-        <footer className="p-4">
+        <footer>
           <AddFeedingDrawer
             onSubmit={(feeding) => {
+              console.log("Feeding", feeding);
               setFeedings((prev) => [...prev, feeding]);
             }}
           />
@@ -41,6 +45,7 @@ function AddFeedingDrawer({
   onSubmit: (feeding: FeedingType) => void;
 }) {
   const [time, setTime] = useState(format(new Date(), "HH:mm"));
+  const [ounces, setOunces] = useState(2);
   console.log(time);
   return (
     <Drawer.Root>
@@ -73,16 +78,19 @@ function AddFeedingDrawer({
                 <label>Ounces</label>
                 <input
                   type="number"
-                  value={2}
+                  value={ounces}
                   className="w-20 px-2"
                   onChange={(e) => {
-                    console.log(e.currentTarget.value);
+                    setOunces(Number(e.currentTarget.value));
                   }}
                 />
               </div>
             </div>
             <button
-              onClick={() => onSubmit({ ounces: 1, time: new Date() })}
+              type="button"
+              onClick={() =>
+                onSubmit({ ounces, time: parse(time, "HH:mm", new Date()) })
+              }
               className="border w-full p-4 rounded-lg text-xl"
             >
               Submit
@@ -100,7 +108,11 @@ type FeedingType = {
 };
 
 const columns: ColumnDef<FeedingType>[] = [
-  { accessorKey: "time", header: "Time" },
+  {
+    accessorKey: "time",
+    header: "Time",
+    cell: ({ row }) => <p>{format(row.original.time, "hh:mm a")}</p>,
+  },
   { accessorKey: "ounces", header: "Ounces" },
 ];
 
