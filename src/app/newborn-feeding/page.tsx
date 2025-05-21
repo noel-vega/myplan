@@ -72,7 +72,7 @@ function AddFeedingDrawer({
                 <input
                   type="time"
                   value={time}
-                  className="w-fit p-2 pr-0 border rounded"
+                  className="w-fit p-2 border rounded"
                   onChange={(e) => {
                     setTime(e.currentTarget.value);
                   }}
