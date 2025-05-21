@@ -10,7 +10,7 @@ const SelectContext = createContext<SelectContextType | undefined>(undefined);
 
 export function SelectProvider({ children }: { children: React.ReactNode }) {
   const [activeSelectId, setActiveSelectId] = useState<string | null>(null);
-  
+
   return (
     <SelectContext.Provider value={{ activeSelectId, setActiveSelectId }}>
       {children}

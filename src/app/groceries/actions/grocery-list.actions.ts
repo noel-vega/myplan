@@ -5,10 +5,11 @@ import {
   GroceryListItemType,
   groceryListTable,
   InsertGroceryListItemType,
-} from "@/db/schema";
+} from "@/db/schema/groceries";
 import { eq } from "drizzle-orm";
 
 export async function getGroceryList({ id }: { id: number }) {
+  db.query.groceryListTable.findFirst();
   const groceryList = await db.query.groceryListTable.findFirst({
     where: eq(groceryListTable.id, id),
     with: {

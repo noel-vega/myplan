@@ -4,11 +4,10 @@
 import "./globals.css";
 import Link from "next/link";
 import { RoutineListProvider } from "./providers/routine-list";
-import { QueryClientProvider } from "@tanstack/react-query";
-import { queryClient } from "@/lib/react-query";
 import { PropsWithChildren } from "react";
 import { HomeIcon } from "lucide-react";
 import { cn } from "@/lib/cn";
+import ReactQueryProvider from "./providers/react-query";
 
 // const geistSans = Geist({
 //   variable: "--font-geist-sans",
@@ -41,11 +40,11 @@ export default function RootLayout({
           </ul>
         </nav>
 
-        <QueryClientProvider client={queryClient}>
+        <ReactQueryProvider>
           <RoutineListProvider>
             <div className="flex-1">{children}</div>
           </RoutineListProvider>
-        </QueryClientProvider>
+        </ReactQueryProvider>
 
         <nav className="border-t sm:hidden bg-gray-50">
           <ul className="flex text-lg max-w-3xl mx-auto w-full">

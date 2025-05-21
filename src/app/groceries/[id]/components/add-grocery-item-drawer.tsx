@@ -7,7 +7,7 @@ import { useAddGroceryListItem } from "../../hooks/useAddGroceryListItem";
 import {
   insertGroceryListItemSchema,
   InsertGroceryListItemType,
-} from "@/db/schema";
+} from "@/db/schema/groceries";
 
 export function AddGroceryListItemDrawer({
   children,

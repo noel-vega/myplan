@@ -10,7 +10,7 @@ import {
 import { useState } from "react";
 import { columns } from "./columns";
 import { EditGroceryItemDrawer } from "../edit-grocery-item-drawer";
-import { GroceryListItemType } from "@/db/schema";
+import { GroceryListItemType } from "@/db/schema/groceries";
 
 export function GroceryListTable({ data }: { data: GroceryListItemType[] }) {
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);

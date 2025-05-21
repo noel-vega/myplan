@@ -1,4 +1,4 @@
-import { GroceryListItemType } from "@/db/schema";
+import { GroceryListItemType } from "@/db/schema/groceries";
 import { ColumnDef } from "@tanstack/react-table";
 
 export const columns: ColumnDef<GroceryListItemType>[] = [

@@ -14,7 +14,7 @@ export const groceryListTable = sqliteTable("grocery_list", {
 
 export type GroceryListType = typeof groceryListTable.$inferSelect;
 
-export const groceryList = relations(groceryListTable, ({ many }) => ({
+export const groceryListRelations = relations(groceryListTable, ({ many }) => ({
   items: many(groceryListItemsTable),
 }));
 

@@ -9,7 +9,7 @@ import {
   GroceryListItemType,
   updateGroceryListItemSchema,
   UpdateGroceryListItemType,
-} from "@/db/schema";
+} from "@/db/schema/groceries";
 import { z } from "zod";
 
 type Props = {
