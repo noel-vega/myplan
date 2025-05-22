@@ -1,4 +1,4 @@
-import { useGroceryList } from "@/app/groceries/hooks/useGroceryList";
+"use client";
 import {
   ColumnFiltersState,
   flexRender,
@@ -6,22 +6,17 @@ import {
   getFilteredRowModel,
   useReactTable,
 } from "@tanstack/react-table";
-import { useMemo, useState } from "react";
+import { useState } from "react";
 import { columns } from "./columns";
 import { GroceryCartItemDrawer } from "../grocery-cart-item-drawer";
+import { GroceryListItemType } from "@/db/schema/groceries";
 
-export function GroceryCartTable() {
-  console.log("GroceryCartTable");
+export function GroceryCartTable({ data }: { data: GroceryListItemType[] }) {
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
 
-  const groceryList = useGroceryList({ id: 1 });
-  const itemsInCart = useMemo(
-    () => groceryList.data?.items.filter((x) => x.inCart) ?? [],
-    [groceryList.data]
-  );
   const table = useReactTable({
     columns,
-    data: itemsInCart,
+    data,
     getCoreRowModel: getCoreRowModel(),
     onColumnFiltersChange: setColumnFilters,
     getFilteredRowModel: getFilteredRowModel(),

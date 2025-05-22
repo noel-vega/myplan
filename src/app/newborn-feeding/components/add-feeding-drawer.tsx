@@ -69,13 +69,13 @@ export function AddFeedingDrawer() {
             className="max-w-3xl mx-auto space-y-8"
           >
             <Drawer.Title className="py-0" />
-            <div className="flex justify-between text-xl">
+            <div className="flex flex-col justify-between gap-2">
               <div className="flex flex-col gap-1">
                 <label>Time</label>
                 <input
                   type="time"
                   {...form.register("date")}
-                  className="w-fit p-2 border rounded"
+                  className="p-2 border rounded"
                 />
               </div>
               <div className="flex flex-col gap-1">
@@ -178,7 +178,7 @@ export function AddFeedingDrawer() {
                 <input
                   type="number"
                   {...form.register("amount")}
-                  className="w-20 p-2 border rounded"
+                  className="p-2 border rounded"
                 />
               </div>
             </div>

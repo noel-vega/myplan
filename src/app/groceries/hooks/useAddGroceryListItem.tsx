@@ -1,15 +1,13 @@
 import { useMutation } from "@tanstack/react-query";
-import { addGroceryListItem } from "../actions/grocery-list.actions";
-import { queryClient } from "@/lib/react-query";
+import { addGroceryListItem } from "../actions";
 import { getUseGroceryListQueryOptions } from "./useGroceryList";
+import { getQueryClient } from "@/app/providers/react-query";
 
-export function useAddGroceryListItem() {
+export function useAddGroceryListItemMutation() {
   return useMutation({
     mutationFn: addGroceryListItem,
-    onSuccess: ({ groceryListId }) => {
-      queryClient.invalidateQueries(
-        getUseGroceryListQueryOptions({ id: groceryListId })
-      );
+    onSuccess: () => {
+      getQueryClient().invalidateQueries(getUseGroceryListQueryOptions());
     },
   });
 }

@@ -3,27 +3,26 @@ import { db } from "@/db";
 import {
   groceryListItemsTable,
   GroceryListItemType,
-  groceryListTable,
   InsertGroceryListItemType,
 } from "@/db/schema/groceries";
 import { eq } from "drizzle-orm";
+import { revalidatePath } from "next/cache";
 
-export async function getGroceryList({ id }: { id: number }) {
-  db.query.groceryListTable.findFirst();
-  const groceryList = await db.query.groceryListTable.findFirst({
-    where: eq(groceryListTable.id, id),
-    with: {
-      items: true,
-    },
+export async function getGroceryList() {
+  const groceryList = await db.query.groceryListItemsTable.findMany({
+    where: eq(groceryListItemsTable.inCart, false),
   });
   return groceryList;
 }
 
-export async function addGroceryListItem({
-  item,
-}: {
-  item: InsertGroceryListItemType;
-}) {
+export async function getGroceryCart() {
+  const cart = await db.query.groceryListItemsTable.findMany({
+    where: eq(groceryListItemsTable.inCart, true),
+  });
+  return cart;
+}
+
+export async function addGroceryListItem(item: InsertGroceryListItemType) {
   const newGroceryListItem = (
     await db.insert(groceryListItemsTable).values(item).returning()
   )[0];
@@ -44,6 +43,7 @@ export async function updateGroceryListItem({
       .where(eq(groceryListItemsTable.id, itemId))
       .returning()
   )[0];
+  revalidatePath("/groceries");
   return updatedGroceryListItem;
 }
 
@@ -54,6 +54,7 @@ export async function deleteGroceryListItem({ id }: { id: number }) {
       .where(eq(groceryListItemsTable.id, id))
       .returning()
   )[0];
+  revalidatePath("/groceries");
   return deletedGroceryListItem;
 }
 
@@ -65,6 +66,7 @@ export async function addGroceryItemToCart({ itemId }: { itemId: number }) {
       .where(eq(groceryListItemsTable.id, itemId))
       .returning()
   )[0];
+  revalidatePath("/groceries");
   return updatedGroceryListItem;
 }
 
@@ -80,5 +82,6 @@ export async function removeGroceryItemFromCart({
       .where(eq(groceryListItemsTable.id, itemId))
       .returning()
   )[0];
+  revalidatePath("/groceries");
   return updatedGroceryListItem;
 }

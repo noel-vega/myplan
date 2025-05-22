@@ -1,6 +1,2 @@
-export {
-  groceryListTable,
-  groceryListItemsTable,
-  groceryListRelations,
-} from "./groceries";
+export { groceryListItemsTable } from "./groceries";
 export { newbornFeedingsTable } from "./newborn-feeding";

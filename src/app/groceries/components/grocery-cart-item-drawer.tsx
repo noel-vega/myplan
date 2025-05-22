@@ -1,16 +1,19 @@
+"use client";
 import { Drawer } from "vaul";
 import { PropsWithChildren, useState } from "react";
 import { ArrowLeftIcon, Trash2Icon } from "lucide-react";
 import { Controller, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useUpdateGroceryListItem } from "../../hooks/useUpdateGroceryListItem";
-import { useDeleteGroceryListItem } from "../../hooks/useDeleteGroceryListItem";
 import {
   GroceryListItemType,
   updateGroceryListItemSchema,
   UpdateGroceryListItemType,
 } from "@/db/schema/groceries";
 import { z } from "zod";
+import { useDeleteGroceryListItem } from "../hooks/useDeleteGroceryListItem";
+import { useUpdateGroceryListItem } from "../hooks/useUpdateGroceryListItem";
+import { LoadingSpinner } from "@/components/loading-spinner";
+import { cn } from "@/lib/cn";
 
 type Props = {
   item: GroceryListItemType;
@@ -29,10 +32,17 @@ export function EditGroceryCartItemForm(props: Props) {
   });
 
   const moveToGroceryList = () => {
-    updateGroceryListItem.mutate({
-      itemId: props.item.id,
-      item: { inCart: false },
-    });
+    updateGroceryListItem.mutate(
+      {
+        itemId: props.item.id,
+        item: { inCart: false },
+      },
+      {
+        onSuccess: () => {
+          props.onSuccess?.();
+        },
+      }
+    );
   };
 
   return (
@@ -46,22 +56,29 @@ export function EditGroceryCartItemForm(props: Props) {
       >
         <Trash2Icon />
       </button>
-      <Drawer.Title className="font-semibold text-xl mb-4">
+      <Drawer.Title className="font-semibold text-xl mb-4 flex items-center gap-4">
         {props.item.name}
+        <LoadingSpinner loading={updateGroceryListItem.isPending} />
       </Drawer.Title>
       <form
         onSubmit={form.handleSubmit((data) => {
-          console.log("edit item", data);
           const { id, ...rest } = data;
-          updateGroceryListItem.mutate({
-            itemId: id,
-            item: rest,
-          });
-
-          props.onSuccess?.();
-          form.reset();
+          updateGroceryListItem.mutate(
+            {
+              itemId: id,
+              item: rest,
+            },
+            {
+              onSuccess: () => {
+                props.onSuccess?.();
+                form.reset();
+              },
+            }
+          );
         })}
-        className="flex flex-col gap-4"
+        className={cn("flex flex-col gap-4", {
+          "opacity-50": updateGroceryListItem.isPending,
+        })}
       >
         <div>
           <label htmlFor="item-name">Name</label>
@@ -124,11 +141,8 @@ export function EditGroceryCartItemForm(props: Props) {
           <button
             type="button"
             className="border rounded-lg p-2 w-full flex justify-center items-center gap-4 text-lg cursor-pointer flex-1"
-            onClick={(e) => {
-              e.stopPropagation();
-              moveToGroceryList();
-              props.onSuccess?.();
-            }}
+            onClick={moveToGroceryList}
+            disabled={updateGroceryListItem.isPending}
           >
             <ArrowLeftIcon size={16} />
             Move to Grocery List

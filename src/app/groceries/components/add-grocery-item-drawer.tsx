@@ -1,21 +1,26 @@
+"use client";
 import { PlusIcon } from "lucide-react";
-import { PropsWithChildren, useState } from "react";
+import { useState } from "react";
 import { Drawer } from "vaul";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Controller, useForm } from "react-hook-form";
-import { useAddGroceryListItem } from "../../hooks/useAddGroceryListItem";
 import {
   insertGroceryListItemSchema,
   InsertGroceryListItemType,
 } from "@/db/schema/groceries";
+import { useAddGroceryListItemMutation } from "../hooks/useAddGroceryListItem";
 
-export function AddGroceryListItemDrawer({
-  children,
-}: { groceryListId: number } & PropsWithChildren) {
+export function AddGroceryListItemDrawer() {
   const [open, setOpen] = useState(false);
   return (
     <Drawer.Root open={open} onOpenChange={setOpen}>
-      {!open ? <Drawer.Trigger asChild>{children}</Drawer.Trigger> : null}
+      {!open ? (
+        <Drawer.Trigger asChild>
+          <button className="border rounded-lg p-2 w-full flex justify-center items-center gap-4 text-lg cursor-pointer flex-1">
+            <PlusIcon size={16} /> Add Item
+          </button>
+        </Drawer.Trigger>
+      ) : null}
 
       <Drawer.Portal>
         <Drawer.Overlay className="fixed inset-0 bg-black/40" />
@@ -37,16 +42,14 @@ export function AddGroceryListItemDrawer({
 }
 
 function AddGroceryListItemForm({ onSuccess }: { onSuccess?: () => void }) {
-  const addItem = useAddGroceryListItem();
+  const addItem = useAddGroceryListItemMutation();
   const form = useForm<InsertGroceryListItemType>({
     resolver: zodResolver(insertGroceryListItemSchema),
   });
   return (
     <form
       onSubmit={form.handleSubmit((item) => {
-        addItem.mutate({
-          item,
-        });
+        addItem.mutate(item);
 
         onSuccess?.();
         form.reset();

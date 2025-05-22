@@ -1,4 +1,3 @@
-import { relations } from "drizzle-orm";
 import { int, sqliteTable, text } from "drizzle-orm/sqlite-core";
 import {
   createInsertSchema,
@@ -7,26 +6,12 @@ import {
 } from "drizzle-zod";
 import { z } from "zod";
 
-export const groceryListTable = sqliteTable("grocery_list", {
-  id: int().primaryKey({ autoIncrement: true }),
-  name: text().notNull(),
-});
-
-export type GroceryListType = typeof groceryListTable.$inferSelect;
-
-export const groceryListRelations = relations(groceryListTable, ({ many }) => ({
-  items: many(groceryListItemsTable),
-}));
-
 export const groceryListItemsTable = sqliteTable("grocery_list_item", {
   id: int().primaryKey({ autoIncrement: true }),
   name: text().notNull(),
   quantity: int().notNull(),
   unitPrice: int().notNull(),
   inCart: int({ mode: "boolean" }).notNull().default(false),
-  groceryListId: int()
-    .notNull()
-    .references(() => groceryListTable.id, { onDelete: "cascade" }),
 });
 
 export const insertGroceryListItemSchema = createInsertSchema(
@@ -45,13 +30,3 @@ export const updateGroceryListItemSchema = createUpdateSchema(
 export type UpdateGroceryListItemType = z.infer<
   typeof updateGroceryListItemSchema
 >;
-
-export const groceryListItemsRelations = relations(
-  groceryListItemsTable,
-  ({ one }) => ({
-    groceryList: one(groceryListTable, {
-      fields: [groceryListItemsTable.groceryListId],
-      references: [groceryListTable.id],
-    }),
-  })
-);
