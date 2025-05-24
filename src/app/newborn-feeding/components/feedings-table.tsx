@@ -36,7 +36,7 @@ const columns: ColumnDef<NewbornFeedingType>[] = [
 //   data: NewbornFeedingType[];
 // };
 export function FeedingsTable() {
-  const feedings = useNewbornFeedings(new Date());
+  const feedings = useNewbornFeedings(format(new Date(), "yyyy-MM-dd"));
   const table = useReactTable({
     data: feedings.data ?? [],
     columns,

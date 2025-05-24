@@ -6,6 +6,7 @@ import {
 } from "../hooks";
 import { Drawer } from "vaul";
 import { getQueryClient } from "@/app/providers/react-query";
+import { format } from "date-fns";
 
 export function EditFeedingDrawer({
   id,
@@ -19,7 +20,9 @@ export function EditFeedingDrawer({
       onSuccess: ({ datetime }) => {
         setOpen(false);
         getQueryClient().invalidateQueries(
-          getUseNewbornFeedingsQueryOptions(new Date(datetime))
+          getUseNewbornFeedingsQueryOptions(
+            format(new Date(datetime), "yyyy-MM-dd")
+          )
         );
       },
     });

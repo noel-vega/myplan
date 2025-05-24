@@ -36,7 +36,9 @@ export function AddFeedingDrawer() {
       onSuccess: ({ datetime }) => {
         setOpen(false);
         getQueryClient().invalidateQueries(
-          getUseNewbornFeedingsQueryOptions(new Date(datetime))
+          getUseNewbornFeedingsQueryOptions(
+            format(new Date(datetime), "yyyy-MM-dd")
+          )
         );
       },
     });

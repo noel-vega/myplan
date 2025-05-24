@@ -12,18 +12,21 @@ import {
 import { NewbornFeedingType } from "@/db/schema/newborn-feeding";
 
 export function getUseNewbornFeedingsQueryOptions(
-  date: Date,
+  date: string,
   options?: QueryOptions<NewbornFeedingType[]>
 ) {
   return queryOptions({
     ...options,
     queryKey: ["newbornFeedings"],
-    queryFn: () => getNewbornFeedingsByDate(date),
+    queryFn: () => {
+      console.log("Fetching feedings", date);
+      return getNewbornFeedingsByDate(date);
+    },
   });
 }
 
 export function useNewbornFeedings(
-  date: Date,
+  date: string,
   options?: QueryOptions<NewbornFeedingType[]>
 ) {
   return useQuery(getUseNewbornFeedingsQueryOptions(date, options));

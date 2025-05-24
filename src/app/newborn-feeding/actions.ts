@@ -3,7 +3,6 @@
 import { db } from "@/db";
 import { newbornFeedingsTable } from "@/db/schema";
 import { InsertNewbornFeedingType } from "@/db/schema/newborn-feeding";
-import { format } from "date-fns";
 import { asc, eq, like } from "drizzle-orm";
 import { revalidatePath } from "next/cache";
 
@@ -16,13 +15,10 @@ export async function createFeeding(params: InsertNewbornFeedingType) {
   return feeding[0];
 }
 
-export async function getNewbornFeedingsByDate(date: Date) {
+export async function getNewbornFeedingsByDate(date: string) {
   const feedings = await db.query.newbornFeedingsTable.findMany({
     orderBy: asc(newbornFeedingsTable.datetime),
-    where: like(
-      newbornFeedingsTable.datetime,
-      `${format(date, "yyyy-MM-dd")}%`
-    ),
+    where: like(newbornFeedingsTable.datetime, `${date}%`),
   });
 
   return feedings;
