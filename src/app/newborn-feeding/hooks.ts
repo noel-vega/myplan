@@ -10,11 +10,9 @@ import { NewbornFeedingType } from "@/db/schema/newborn-feeding";
 export function getUseNewbornFeedingsQueryOptions(
   queryOptionsConfig?: QueryOptions<NewbornFeedingType[]>
 ) {
-  console.log("initial data", queryOptionsConfig?.initialData);
   return queryOptions({
     queryKey: ["newbornFeedings"],
     queryFn: getNewbornFeedings,
-
     ...queryOptionsConfig,
   });
 }
@@ -33,8 +31,6 @@ export function useCreateNewbornFeedingMutation() {
 
 export function useDeleteNewbornFeedingMutation() {
   return useMutation({
-    mutationFn: (id: number) => {
-      return deleteFeeding(id);
-    },
+    mutationFn: deleteFeeding,
   });
 }

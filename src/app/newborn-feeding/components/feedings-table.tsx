@@ -6,7 +6,6 @@ import {
   getCoreRowModel,
   useReactTable,
 } from "@tanstack/react-table";
-import { useNewbornFeedings } from "../hooks";
 import { format } from "date-fns";
 import { EditFeedingDrawer } from "./edit-feeding-drawer";
 

@@ -1,11 +1,7 @@
 "use client";
 import { PropsWithChildren, useState } from "react";
-import {
-  getUseNewbornFeedingsQueryOptions,
-  useDeleteNewbornFeedingMutation,
-} from "../hooks";
+import { useDeleteNewbornFeedingMutation } from "../hooks";
 import { Drawer } from "vaul";
-import { getQueryClient } from "@/app/providers/react-query";
 
 export function EditFeedingDrawer({
   id,
@@ -18,7 +14,6 @@ export function EditFeedingDrawer({
     deleteNewbornFeedingMutation.mutate(id, {
       onSuccess: () => {
         setOpen(false);
-        getQueryClient().invalidateQueries(getUseNewbornFeedingsQueryOptions());
       },
     });
   };

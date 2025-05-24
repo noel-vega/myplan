@@ -5,16 +5,12 @@ import {
 } from "@/db/schema/newborn-feeding";
 import { useEffect, useState } from "react";
 import { Controller, useForm } from "react-hook-form";
-import {
-  getUseNewbornFeedingsQueryOptions,
-  useCreateNewbornFeedingMutation,
-} from "../hooks";
+import { useCreateNewbornFeedingMutation } from "../hooks";
 import { format } from "date-fns";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Drawer } from "vaul";
 import { ChevronDownIcon, PlusIcon } from "lucide-react";
 import * as Select from "@radix-ui/react-select";
-import { getQueryClient } from "@/app/providers/react-query";
 import { LoadingSpinner } from "@/components/loading-spinner";
 import { cn } from "@/lib/cn";
 
@@ -41,7 +37,6 @@ export function AddFeedingDrawer() {
     createNewbornFeedingMutation.mutate(params, {
       onSuccess: () => {
         setOpen(false);
-        getQueryClient().invalidateQueries(getUseNewbornFeedingsQueryOptions());
       },
     });
   };
