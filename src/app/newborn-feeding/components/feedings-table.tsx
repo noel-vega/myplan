@@ -36,12 +36,8 @@ type Props = {
   data: NewbornFeedingType[];
 };
 export function FeedingsTable(props: Props) {
-  const { data: feedings } = useNewbornFeedings({
-    initialData: props.data,
-  });
-
   const table = useReactTable({
-    data: feedings ?? [],
+    data: props.data ?? [],
     columns,
     getCoreRowModel: getCoreRowModel(),
   });
