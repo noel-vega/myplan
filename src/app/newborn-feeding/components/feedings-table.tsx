@@ -35,7 +35,7 @@ type Props = {
   // fetched server-side in next js page
   data: NewbornFeedingType[];
 };
-export function FeedingsTable(props: Props) {
+export function FeedingsTable() {
   const feedings = useNewbornFeedings(new Date());
   const table = useReactTable({
     data: feedings.data ?? [],

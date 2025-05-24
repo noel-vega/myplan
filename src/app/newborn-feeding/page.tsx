@@ -2,7 +2,6 @@
 import { AddFeedingDrawer } from "./components/add-feeding-drawer";
 import { FeedingsTable } from "./components/feedings-table";
 import { format } from "date-fns";
-import { useNewbornFeedings } from "./hooks";
 import { useEffect, useState } from "react";
 
 export default function Page() {
@@ -25,7 +24,7 @@ export default function Page() {
           <p className="text-3xl">Feeding</p>
           <p>{format(date, "MM-dd-yyyy")}</p>
         </div>
-        <FeedingsTable data={feedings.data ?? []} />
+        <FeedingsTable />
       </section>
 
       <footer>
