@@ -28,13 +28,7 @@ export function AddFeedingDrawer() {
   });
 
   const handleSubmit = (data: InsertNewbornFeedingType) => {
-    const params: InsertNewbornFeedingType = {
-      datetime: data.datetime,
-      type: data.type,
-      unit: data.unit,
-      amount: data.amount,
-    };
-    createNewbornFeedingMutation.mutate(params, {
+    createNewbornFeedingMutation.mutate(data, {
       onSuccess: () => {
         setOpen(false);
       },
