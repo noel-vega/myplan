@@ -3,18 +3,20 @@ import {
   insertNewbornFeedingSchema,
   InsertNewbornFeedingType,
 } from "@/db/schema/newborn-feeding";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import {
   getUseNewbornFeedingsQueryOptions,
   useCreateNewbornFeedingMutation,
 } from "../hooks";
-import { format, parse } from "date-fns";
+import { format } from "date-fns";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Drawer } from "vaul";
 import { ChevronDownIcon, PlusIcon } from "lucide-react";
 import * as Select from "@radix-ui/react-select";
 import { getQueryClient } from "@/app/providers/react-query";
+import { LoadingSpinner } from "@/components/loading-spinner";
+import { cn } from "@/lib/cn";
 
 export function AddFeedingDrawer() {
   const [open, setOpen] = useState(false);
@@ -22,7 +24,7 @@ export function AddFeedingDrawer() {
   const form = useForm<InsertNewbornFeedingType>({
     resolver: zodResolver(insertNewbornFeedingSchema),
     defaultValues: {
-      date: format(new Date(), "HH:mm"),
+      datetime: format(new Date(), "yyyy-MM-dd'T'HH:mm"),
       type: "breast",
       unit: "minutes",
       amount: 20,
@@ -30,14 +32,8 @@ export function AddFeedingDrawer() {
   });
 
   const handleSubmit = (data: InsertNewbornFeedingType) => {
-    // Create a date object for today with the user's selected time
-    const today = new Date();
-    const parsedTime = parse(data.date, "HH:mm", today);
-    // Ensure we use consistent ISO format
-    const isoDate = parsedTime.toISOString();
-
     const params: InsertNewbornFeedingType = {
-      date: isoDate,
+      datetime: data.datetime,
       type: data.type,
       unit: data.unit,
       amount: data.amount,
@@ -49,6 +45,9 @@ export function AddFeedingDrawer() {
       },
     });
   };
+  useEffect(() => {
+    form.reset();
+  }, [open]);
   return (
     <Drawer.Root open={open} onOpenChange={setOpen}>
       <Drawer.Trigger className="border w-full rounded-lg p-2 cursor-pointer flex items-center gap-2 justify-center text-xl">
@@ -66,18 +65,26 @@ export function AddFeedingDrawer() {
             onSubmit={form.handleSubmit((data) => {
               handleSubmit(data);
             })}
-            className="max-w-3xl mx-auto space-y-8"
+            className={cn("max-w-3xl mx-auto space-y-8", {
+              "opacity-50": createNewbornFeedingMutation.isPending,
+            })}
           >
-            <Drawer.Title className="py-0" />
+            <Drawer.Title className="text-lg font-bold flex items-center gap-2">
+              Feeding{" "}
+              <LoadingSpinner
+                loading={createNewbornFeedingMutation.isPending}
+              />
+            </Drawer.Title>
             <div className="flex flex-col justify-between gap-2">
               <div className="flex flex-col gap-1">
-                <label>Time</label>
+                <label>Date</label>
                 <input
-                  type="time"
-                  {...form.register("date")}
+                  type="datetime-local"
+                  {...form.register("datetime")}
                   className="p-2 border rounded"
                 />
               </div>
+
               <div className="flex flex-col gap-1">
                 <label>Type</label>
                 <Controller
@@ -184,6 +191,11 @@ export function AddFeedingDrawer() {
             </div>
             <button
               type="submit"
+              disabled={
+                createNewbornFeedingMutation.isPending ||
+                form.formState.isSubmitting ||
+                !open
+              }
               className="border w-full p-4 rounded-lg text-xl cursor-pointer"
             >
               Submit

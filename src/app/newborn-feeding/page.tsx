@@ -1,10 +1,9 @@
 import { AddFeedingDrawer } from "./components/add-feeding-drawer";
-import { getNewbornFeedings } from "./actions";
+import { getNewbornFeedingsByDate } from "./actions";
 import { FeedingsTable } from "./components/feedings-table";
 
 export default async function Page() {
-  const feedings = await getNewbornFeedings();
-  console.log("feedings", feedings);
+  const feedings = await getNewbornFeedingsByDate(new Date());
 
   return (
     <div className="h-full flex flex-col max-w-3xl mx-auto p-4">

@@ -15,7 +15,7 @@ const columns: ColumnDef<NewbornFeedingType>[] = [
     accessorKey: "time",
     header: "Time",
     cell: ({ row }) => {
-      return format(row.original.date, "hh:mm a");
+      return format(row.original.datetime, "h:mm a"); // 'h' for 12-hour format without leading zero, 'a' for AM/PM
     },
   },
   {

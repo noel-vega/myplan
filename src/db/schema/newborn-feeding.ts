@@ -4,7 +4,7 @@ import { z } from "zod";
 
 export const newbornFeedingsTable = sqliteTable("newborn_feedings", {
   id: int().primaryKey({ autoIncrement: true }),
-  date: text().notNull(),
+  datetime: text().notNull(),
   type: text({ enum: ["breast", "formula"] }).notNull(),
   unit: text({ enum: ["ounces", "minutes"] }).notNull(),
   amount: int().notNull(),
