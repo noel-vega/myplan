@@ -26,6 +26,7 @@ export async function addGroceryListItem(item: InsertGroceryListItemType) {
   const newGroceryListItem = (
     await db.insert(groceryListItemsTable).values(item).returning()
   )[0];
+  revalidatePath("/groceries");
   return newGroceryListItem;
 }
 
