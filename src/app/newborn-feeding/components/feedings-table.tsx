@@ -31,10 +31,10 @@ const columns: ColumnDef<NewbornFeedingType>[] = [
   },
 ];
 
-type Props = {
-  // fetched server-side in next js page
-  data: NewbornFeedingType[];
-};
+// type Props = {
+//   // fetched server-side in next js page
+//   data: NewbornFeedingType[];
+// };
 export function FeedingsTable() {
   const feedings = useNewbornFeedings(new Date());
   const table = useReactTable({
