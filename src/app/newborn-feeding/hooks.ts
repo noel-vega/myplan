@@ -4,23 +4,29 @@ import {
   useMutation,
   useQuery,
 } from "@tanstack/react-query";
-import { createFeeding, deleteFeeding, getNewbornFeedings } from "./actions";
+import {
+  createFeeding,
+  deleteFeeding,
+  getNewbornFeedingsByDate,
+} from "./actions";
 import { NewbornFeedingType } from "@/db/schema/newborn-feeding";
 
 export function getUseNewbornFeedingsQueryOptions(
-  queryOptionsConfig?: QueryOptions<NewbornFeedingType[]>
+  date: Date,
+  options?: QueryOptions<NewbornFeedingType[]>
 ) {
   return queryOptions({
+    ...options,
     queryKey: ["newbornFeedings"],
-    queryFn: getNewbornFeedings,
-    ...queryOptionsConfig,
+    queryFn: () => getNewbornFeedingsByDate(date),
   });
 }
 
 export function useNewbornFeedings(
+  date: Date,
   options?: QueryOptions<NewbornFeedingType[]>
 ) {
-  return useQuery(getUseNewbornFeedingsQueryOptions(options));
+  return useQuery(getUseNewbornFeedingsQueryOptions(date, options));
 }
 
 export function useCreateNewbornFeedingMutation() {

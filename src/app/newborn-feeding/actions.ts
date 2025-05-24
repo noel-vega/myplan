@@ -8,16 +8,12 @@ import { asc, eq, like } from "drizzle-orm";
 import { revalidatePath } from "next/cache";
 
 export async function createFeeding(params: InsertNewbornFeedingType) {
-  await db.insert(newbornFeedingsTable).values(params);
+  const feeding = await db
+    .insert(newbornFeedingsTable)
+    .values(params)
+    .returning();
   revalidatePath("/newborn-feeding");
-}
-
-export async function getNewbornFeedings() {
-  const feedings = await db.query.newbornFeedingsTable.findMany({
-    orderBy: asc(newbornFeedingsTable.datetime),
-  });
-
-  return feedings;
+  return feeding[0];
 }
 
 export async function getNewbornFeedingsByDate(date: Date) {
@@ -33,6 +29,10 @@ export async function getNewbornFeedingsByDate(date: Date) {
 }
 
 export async function deleteFeeding(id: number) {
-  await db.delete(newbornFeedingsTable).where(eq(newbornFeedingsTable.id, id));
+  const feeding = await db
+    .delete(newbornFeedingsTable)
+    .where(eq(newbornFeedingsTable.id, id))
+    .returning();
   revalidatePath("/newborn-feeding");
+  return feeding[0];
 }
