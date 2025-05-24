@@ -5,7 +5,6 @@ import { format } from "date-fns";
 import { useNewbornFeedings } from "./hooks";
 
 export default function Page() {
-  // const [date, _] = useState(new Date());
   const date = new Date();
   const feedings = useNewbornFeedings(date);
 

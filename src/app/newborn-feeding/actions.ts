@@ -21,7 +21,7 @@ export async function getNewbornFeedingsByDate(date: Date) {
     orderBy: asc(newbornFeedingsTable.datetime),
     where: like(
       newbornFeedingsTable.datetime,
-      `${format(date.toUTCString(), "yyyy-MM-dd")}%`
+      `${format(date, "yyyy-MM-dd")}%`
     ),
   });
 
