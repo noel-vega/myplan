@@ -8,7 +8,6 @@ import {
 } from "@tanstack/react-table";
 import { format } from "date-fns";
 import { EditFeedingDrawer } from "./edit-feeding-drawer";
-import { useNewbornFeedings } from "../hooks";
 
 const columns: ColumnDef<NewbornFeedingType>[] = [
   {
