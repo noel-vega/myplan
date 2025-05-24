@@ -31,14 +31,13 @@ const columns: ColumnDef<NewbornFeedingType>[] = [
   },
 ];
 
-// type Props = {
-//   // fetched server-side in next js page
-//   data: NewbornFeedingType[];
-// };
-export function FeedingsTable() {
-  const feedings = useNewbornFeedings(format(new Date(), "yyyy-MM-dd"));
+type Props = {
+  // fetched server-side in next js page
+  data: NewbornFeedingType[];
+};
+export function FeedingsTable(props: Props) {
   const table = useReactTable({
-    data: feedings.data ?? [],
+    data: props.data ?? [],
     columns,
     getCoreRowModel: getCoreRowModel(),
   });
