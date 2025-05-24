@@ -12,7 +12,7 @@ export default async function Page() {
       <section className="flex-1">
         <div className="flex items-end justify-between text-2xl font-semibold mb-4">
           <p className="text-3xl">Feeding</p>
-          <p>{format(date.toUTCString(), "MM-dd-yyyy")}</p>
+          <p>{format(date.toLocaleDateString(), "MM-dd-yyyy")}</p>
         </div>
         <FeedingsTable data={feedings} />
       </section>
