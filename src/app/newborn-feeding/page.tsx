@@ -3,10 +3,20 @@ import { AddFeedingDrawer } from "./components/add-feeding-drawer";
 import { FeedingsTable } from "./components/feedings-table";
 import { format } from "date-fns";
 import { useNewbornFeedings } from "./hooks";
+import { useEffect, useState } from "react";
 
 export default function Page() {
+  const [browser, setBrowser] = useState(false);
   const date = new Date();
   const feedings = useNewbornFeedings(date);
+
+  useEffect(() => {
+    setBrowser(true);
+  }, []);
+
+  if (!browser) {
+    return null;
+  }
 
   return (
     <div className="h-full flex flex-col max-w-3xl mx-auto p-4">
