@@ -3,10 +3,12 @@ import { AddFeedingDrawer } from "./components/add-feeding-drawer";
 import { FeedingsTable } from "./components/feedings-table";
 import { format } from "date-fns";
 import { useEffect, useState } from "react";
+import { useNewbornFeedings } from "./hooks";
 
 export default function Page() {
   const [browser, setBrowser] = useState(false);
   const [date, setDate] = useState(new Date());
+  const feedings = useNewbornFeedings(format(date, "yyyy-MM-dd"));
 
   useEffect(() => {
     setDate(new Date());
@@ -24,7 +26,7 @@ export default function Page() {
           <p className="text-3xl">Feeding</p>
           <p>{format(date, "MM-dd-yyyy")}</p>
         </div>
-        <FeedingsTable />
+        <FeedingsTable data={feedings.data ?? []} />
       </section>
 
       <footer>
