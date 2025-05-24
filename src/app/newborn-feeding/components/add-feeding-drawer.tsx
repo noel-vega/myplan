@@ -20,7 +20,7 @@ export function AddFeedingDrawer() {
   const form = useForm<InsertNewbornFeedingType>({
     resolver: zodResolver(insertNewbornFeedingSchema),
     defaultValues: {
-      datetime: format(new Date(), "yyyy-MM-dd'T'HH:mm"),
+      datetime: format(new Date().toUTCString(), "yyyy-MM-dd'T'HH:mm"),
       type: "breast",
       unit: "minutes",
       amount: 20,
