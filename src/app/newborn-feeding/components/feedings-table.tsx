@@ -8,6 +8,7 @@ import {
 } from "@tanstack/react-table";
 import { format } from "date-fns";
 import { EditFeedingDrawer } from "./edit-feeding-drawer";
+import { useNewbornFeedings } from "../hooks";
 
 const columns: ColumnDef<NewbornFeedingType>[] = [
   {
@@ -35,8 +36,9 @@ type Props = {
   data: NewbornFeedingType[];
 };
 export function FeedingsTable(props: Props) {
+  const feedings = useNewbornFeedings(new Date());
   const table = useReactTable({
-    data: props.data ?? [],
+    data: feedings.data ?? [],
     columns,
     getCoreRowModel: getCoreRowModel(),
   });

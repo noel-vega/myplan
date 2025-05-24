@@ -8,11 +8,10 @@ import { useEffect, useState } from "react";
 export default function Page() {
   const [browser, setBrowser] = useState(false);
   const [date, setDate] = useState(new Date());
-  const feedings = useNewbornFeedings(date);
 
   useEffect(() => {
-    setBrowser(true);
     setDate(new Date());
+    setBrowser(true);
   }, []);
 
   if (!browser) {
